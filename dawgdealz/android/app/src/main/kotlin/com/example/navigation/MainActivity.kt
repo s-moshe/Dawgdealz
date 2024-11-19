@@ -1,4 +1,4 @@
-package com.example.dawgdealz
+package com.example.navigation
 
 import io.flutter.embedding.android.FlutterActivity
 
