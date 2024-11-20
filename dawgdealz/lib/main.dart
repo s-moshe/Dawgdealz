@@ -72,7 +72,13 @@ class _NavDemoState extends State<NavDemo> {
           1 => const CustomWidget2(),
           2 => const CustomWidget3(),
           3 => const CustomWidget4(),
-          4 => const CustomWidget5(),
+          4 => const CustomWidget5(name: 'Jane Doe',
+            bio: 'Loves hiking, reading, and coding.',
+            major: 'Computer Science',
+            email: 'dodemodeactivated@gmail.com',
+            gradDate: 2025,
+            pfpLink: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL2dfky_1KBHAxlyPXMdWqk908mI7QZeg6yw&s', // Replace with a real image URL if needed
+            pfpDesc: 'Jane Doe Profile Picture',),
           _ => const CustomWidget1()
         }
       )
