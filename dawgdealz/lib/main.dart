@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:navigation/views/custom_widget1.dart';
-import 'package:navigation/views/custom_widget2.dart';
+import 'package:navigation/views/item_entry_view.dart';
 import 'package:navigation/views/custom_widget3.dart';
 import 'package:navigation/views/custom_widget4.dart';
 import 'package:navigation/views/custom_widget5.dart';
@@ -69,7 +69,7 @@ class _NavDemoState extends State<NavDemo> {
       body: Center(child: 
         switch (_currentTabIndex) {
           0 => const CustomWidget1(),
-          1 => const CustomWidget2(),
+          1 => const ItemEntryView(),
           2 => const CustomWidget3(),
           3 => const CustomWidget4(),
           4 => const CustomWidget5(),
