@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomWidget2 extends StatelessWidget {
-  const CustomWidget2({super.key});
+class ItemEntryView extends StatelessWidget {
+  const ItemEntryView({super.key});
 
   @override
   Widget build(BuildContext context) {
