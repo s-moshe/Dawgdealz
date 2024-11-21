@@ -69,8 +69,8 @@ class _NavDemoState extends State<NavDemo> {
       body: Center(child: 
         switch (_currentTabIndex) {
           0 => const CustomWidget1(),
-          1 => const ItemEntryView(),
-          2 => const CustomWidget3(),
+          1 => const CustomWidget3(),
+          2 => const ItemEntryView(),
           3 => const CustomWidget4(),
           4 => const CustomWidget5(),
           _ => const CustomWidget1()
