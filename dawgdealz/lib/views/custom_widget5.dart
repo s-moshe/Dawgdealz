@@ -65,6 +65,9 @@ class CustomWidget5 extends StatelessWidget {
     );
   }
 
+
+//akldjfhdf
+
   Widget _buildName() {
     return Column(
       //mainAxisAlignment: ,
@@ -92,6 +95,7 @@ class CustomWidget5 extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           GestureDetector(
+            //replace with flutter email sender
             onTap: () {
               final emailUri = Uri(
                 scheme: 'mailto',
