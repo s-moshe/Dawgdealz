@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:navigation/views/prof_edit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:navigation/views/prof_edit.dart';
+//import 'package:flutter_email'
 
 
 class CustomWidget5 extends StatelessWidget {
@@ -8,8 +11,8 @@ class CustomWidget5 extends StatelessWidget {
   final String major;
   final String email;
   final int gradDate;
-  final String pfpLink;
-  final String pfpDesc;
+  //final String pfpLink;
+  //final String pfpDesc;
 
   const CustomWidget5({
     required this.name,
@@ -17,8 +20,8 @@ class CustomWidget5 extends StatelessWidget {
     required this.major,
     required this.email,
     required this.gradDate,
-    required this.pfpLink,
-    required this.pfpDesc
+    //required this.pfpLink,
+   // required this.pfpDesc
   });
 
   @override
@@ -35,7 +38,7 @@ class CustomWidget5 extends StatelessWidget {
         
         children: [
           //profile image
-          _buildImage(),
+          //_buildImage(),
           const SizedBox(height: 8.0),
       
           //name and info
@@ -44,15 +47,16 @@ class CustomWidget5 extends StatelessWidget {
           
           //their listings
           //_buildListings()
+          _buildEditButton(context)
         ],
       ),
     );
   }
 
-  Widget _buildImage() {
+  /*Widget _buildImage() {
     //check if image url is brocken
     print('Image URL: $pfpLink');
-    return Center( // This centers the entire content inside
+    return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.network(
@@ -63,7 +67,7 @@ class CustomWidget5 extends StatelessWidget {
         ),
       ),
     );
-  }
+  }*/
 
 
 //akldjfhdf
@@ -74,48 +78,66 @@ class CustomWidget5 extends StatelessWidget {
       children: [
         Text(
           name,
-          style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold)
+          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)
         ),
         Text(
           'Major: $major',
-          style: const TextStyle(fontSize: 20)
+          style: const TextStyle(fontSize: 16)
         ),
         Text(
           'Year: $gradDate',
-          style: const TextStyle(fontSize: 20)
+          style: const TextStyle(fontSize: 16)
         ),
         Text(
           'About Me: $bio',
-          style: const TextStyle(fontSize: 20)
+          style: const TextStyle(fontSize: 16)
         ),
         Row(
         children: [
           const Text(
-            'Email Me: ',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            'Contact: ',
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           GestureDetector(
-            //replace with flutter email sender
-            onTap: () {
-              final emailUri = Uri(
+            //replace with flutter email sender if it doesn't work
+            onTap: () async {
+              final Uri emailUri = Uri(
                 scheme: 'mailto',
-                path: email,
+                path: '$email@uw.edu',
+                query: 'subject=Dawg Dealz Request&body=Hi $name! I saw your profile listings, and I would like to discuss...',
               );
-              launchUrl(emailUri);
+              if (await canLaunchUrl(emailUri)) {
+                await launchUrl(emailUri);
+              } else {
+                print('Could not launch email client');
+              }
             },
             child: Text(
-              email,
+              '$email@uw.edu',
               style: const TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.blue, // Email link styled blue
-                decoration: TextDecoration.underline, // Underlined for link effect
+                color: Colors.blue, 
+                decoration: TextDecoration.underline,
               ),
             ),
+            //add an email me button?
           ),
         ],
       )
       ]   
+    );
+  }
+
+  Widget _buildEditButton(context){
+    return ElevatedButton(
+          onPressed: (){_giveEditPage(context);}, 
+          child: const Text('Edit Profile'));
+  }
+
+  _giveEditPage(context){
+    Navigator.push(context, 
+        MaterialPageRoute(builder: (context) => EditProfileWidget(name: name, bio: bio, major: major, email: email, gradDate: gradDate)),
     );
   }
 

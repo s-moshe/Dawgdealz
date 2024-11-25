@@ -25,6 +25,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//bladhflkahdf
+
 class NavDemo extends StatefulWidget {
   const NavDemo({super.key, required this.title});
   final String title;
@@ -75,10 +77,9 @@ class _NavDemoState extends State<NavDemo> {
           4 => const CustomWidget5(name: 'Jane Doe',
             bio: 'Loves hiking, reading, and coding.',
             major: 'Computer Science',
-            email: 'dodemodeactivated@gmail.com',
+            email: 'adanila',
             gradDate: 2025,
-            pfpLink: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL2dfky_1KBHAxlyPXMdWqk908mI7QZeg6yw&s', // Replace with a real image URL if needed
-            pfpDesc: 'Jane Doe Profile Picture',),
+            ),
           _ => const CustomWidget1()
         }
       )
