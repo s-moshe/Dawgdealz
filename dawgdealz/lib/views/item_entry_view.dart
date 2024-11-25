@@ -132,7 +132,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
                     border:
                         OutlineInputBorder(), // Draws a border around the dropdown.
                   ),
-                ),
+                ), //sfjsalhfa
               ),
               const SizedBox(height: 40), // Adds vertical space.
 
