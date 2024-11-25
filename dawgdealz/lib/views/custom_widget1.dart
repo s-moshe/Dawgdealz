@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:navigation/views/custom_widget3.dart';
+import 'package:navigation/views/donut_widget.dart';
 
 
 class CustomWidget1 extends StatefulWidget {
@@ -74,52 +75,61 @@ class _CustomWidget1State extends State<CustomWidget1> {
                   final venue = displayedVenues[index];
 
                   return InkWell(
-                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>const CustomWidget3()));},
+                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=>DonutWidget(venue: venue)));},
                     child: Card(
-                      child: Container(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  ClipOval(
-                                    child: (venue != null)
-                                        ? Image.network(
-                                            venue,
-                                            height: 100,
-                                            width: 100,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : const Icon(Icons.image_not_supported),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Container(
+                          color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ClipOval(
+                                      child: (venue != null)
+                                          ? Image.network(
+                                              venue,
+                                              height: 100,
+                                              width: 100,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : const Icon(Icons.image_not_supported),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 10), // Add this line for padding
+                                Semantics(
+                                  child: const Text(
+                                    'Rating: 4.5 ★',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 18),
                                   ),
-                                ],
-                              ),
-                              Semantics(
-                                child: const Text(
-                                  'Rating: 4.5',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
                                 ),
-                              ),
-                              Semantics(
-                                child: Text(
-                                  'Item $index',
-                                  style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
+                                Semantics(
+                                  child: Text(
+                                    'Item $index',
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
-                              Semantics(
-                                child: const Text(
-                                  '1 mi away',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 18),
+                                Semantics(
+                                  child: const Text(
+                                    '1 mi away',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 18),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),

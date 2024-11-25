@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "808142757105",
+    "project_id": "dawgdealz-b7119",
+    "storage_bucket": "dawgdealz-b7119.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:808142757105:android:0a46e005ca7669240cdd50",
+        "android_client_info": {
+          "package_name": "com.example.navigation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWvAehARgi6vp8rnwX9Uy31kY6PG47mgg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

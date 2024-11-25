@@ -6,19 +6,20 @@ class CustomWidget3 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text('Hello from Widget 3'),
-        ElevatedButton(
-          onPressed: (){_giveDonut(context);}, 
-          child: const Text('Press for Donut')),
-      ],
-    );
+    // return Column(
+    //   children: [
+    //     const Text('Hello from Widget 3'),
+    //     ElevatedButton(
+    //       onPressed: (){_giveDonut(context);}, 
+    //       child: const Text('Press for Donut')),
+    //   ],
+    // );
+    return const Text("test");
   }
 
-  _giveDonut(context){
-    Navigator.push(context, 
-        MaterialPageRoute(builder: (context) => const DonutWidget()),
-    );
-  }
+  // _giveDonut(context){
+  //   Navigator.push(context, 
+  //       MaterialPageRoute(builder: (context) => const DonutWidget()),
+  //   );
+  // }
 }
