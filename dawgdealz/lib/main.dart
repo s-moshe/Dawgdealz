@@ -35,6 +35,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//bladhflkahdf
+
 class NavDemo extends StatefulWidget {
   const NavDemo({super.key, required this.title});
   final String title;
@@ -82,7 +84,12 @@ class _NavDemoState extends State<NavDemo> {
           1 => const CustomWidget3(),
           2 => const ItemEntryView(),
           3 => const CustomWidget4(),
-          4 => const CustomWidget5(),
+          4 => const CustomWidget5(name: 'Jane Doe',
+            bio: 'Loves hiking, reading, and coding.',
+            major: 'Computer Science',
+            email: 'adanila',
+            gradDate: 2025,
+            ),
           _ => const CustomWidget1()
         }
       )
