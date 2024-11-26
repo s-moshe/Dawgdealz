@@ -9,7 +9,7 @@ class DonutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color.fromARGB(255, 114, 88, 159),
         title: Text('Item'),
       ),
       body: SingleChildScrollView(

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:navigation/main.dart'; // Import the file where NavDemo is defined, which represents the main app structure.
 
 class ItemEntryView extends StatefulWidget {
@@ -22,7 +25,19 @@ class _EntryItemViewState extends State<ItemEntryView> {
   String _selectedCategory =
       'General'; // Holds the currently selected category from the dropdown.
   String _itemCondition = 'Used'; // Default for item condition
-  List<String> _uploadedPhotos = []; // list of uploaded
+  final List<File> _uploadedPhotos = []; // list of uploaded
+
+  final ImagePicker _picker = ImagePicker();
+
+   // Method to pick an image from the camera or gallery
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+    if (image != null) {
+      setState(() {
+        _uploadedPhotos.add(File(image.path));  // Add the image file to the list of uploaded photos
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,9 +200,29 @@ class _EntryItemViewState extends State<ItemEntryView> {
                 child: ElevatedButton.icon(
                   onPressed: () {
                     // Placeholder logic for adding photos.
-                    setState(() {
-                      _uploadedPhotos.add("Photo ${_uploadedPhotos.length + 1}"); // Add placeholder photo.
-                    });
+                     // Show a dialog to choose between camera or gallery
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Select Photo Source'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _pickImage(ImageSource.camera);  // Take a picture
+                            },
+                            child: const Text('Camera'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              _pickImage(ImageSource.gallery);  // Pick from gallery
+                            },
+                            child: const Text('Gallery'),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   icon: const Icon(Icons.photo), // Icon for the button.
                   label: const Text('Add Photo'),
@@ -204,19 +239,35 @@ class _EntryItemViewState extends State<ItemEntryView> {
                       'Uploaded Photos:',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    Wrap(
-                      spacing: 8.0, // Space between photo chips.
-                      children: _uploadedPhotos
-                          .map((photo) => Chip(
-                                label: Text(photo), // Display photo name.
-                                deleteIcon: const Icon(Icons.close), // Delete icon for each photo.
-                                onDeleted: () {
-                                  setState(() {
-                                    _uploadedPhotos.remove(photo); // Remove photo when delete icon is clicked.
-                                  });
-                                },
-                              ))
-                          .toList(),
+                   Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: _uploadedPhotos.map((photo) {
+                      return Stack(
+                        alignment: Alignment.topRight,
+                        children: [
+                          Container(
+                            width: 100, // Adjust width.
+                            height: 100, // Adjust height.
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              image: DecorationImage(
+                                image: FileImage(photo),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close, color: Colors.red),
+                            onPressed: () {
+                              setState(() {
+                                _uploadedPhotos.remove(photo); // Remove photo when delete icon is clicked.
+                              });
+                            },
+                          ),
+                        ],
+                      );
+                    }).toList(),
                     ),
                   ],
                 ),
@@ -263,3 +314,4 @@ class _EntryItemViewState extends State<ItemEntryView> {
     );
   }
 }
+
