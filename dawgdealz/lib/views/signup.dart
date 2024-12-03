@@ -4,13 +4,13 @@ import 'login.dart';
 
 class SignupPage extends StatefulWidget {
   @override
-  _SignupPageState createState() => _SignupPageState();
+  SignupPageState createState() => SignupPageState();
 }
 
 final TextEditingController _emailController = TextEditingController();
 final TextEditingController _passwordController = TextEditingController();
 
-class _SignupPageState extends State<SignupPage> {
+class SignupPageState extends State<SignupPage> {
   bool _obscureText = true;
 
   @override

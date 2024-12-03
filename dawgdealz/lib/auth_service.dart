@@ -22,7 +22,7 @@ class AuthService {
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => NavDemo(title: 'DawgDealz')),
+        MaterialPageRoute(builder: (context) => const NavDemo(title: 'DawgDealz')),
       );
       Fluttertoast.showToast(
         msg: 'Successfully created account.',
@@ -69,7 +69,7 @@ class AuthService {
       await Future.delayed(const Duration(seconds: 1));
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => NavDemo(title: 'DawgDealz')),
+        MaterialPageRoute(builder: (context) => const NavDemo(title: 'DawgDealz')),
       );
       Fluttertoast.showToast(
         msg: 'Successfully logged in.',

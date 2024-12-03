@@ -24,7 +24,7 @@ class ItemProvider extends ChangeNotifier {
           .orderBy('timestamp', descending: true)
           .get();
       _items = querySnapshot.docs
-          .map((doc) => Item.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) => Item.fromMap(doc.data()))
           .toList();
     } catch (error) {
       print('Error fetching items: $error');

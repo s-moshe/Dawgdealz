@@ -139,9 +139,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
+          const Text(
             emailDomain,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),
