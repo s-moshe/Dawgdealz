@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:navigation/views/custom_widget5.dart';
 
 class EditProfileWidget extends StatefulWidget {
   final String name;

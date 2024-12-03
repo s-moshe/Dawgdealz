@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:navigation/helper/upload.dart';
 import 'package:navigation/main.dart'; // Import the file where NavDemo is defined, which represents the main app structure.
 
 class ItemEntryView extends StatefulWidget {
@@ -15,19 +15,16 @@ class ItemEntryView extends StatefulWidget {
 // This class manages the state (data and UI behavior) of the ItemEntryView.
 class _EntryItemViewState extends State<ItemEntryView> {
   // TextEditingController allows us to control the text inside the input fields.
-  final TextEditingController _nameController = TextEditingController(
-      text: "Sample Item"); // Pre-filled placeholder text.
-  final TextEditingController _descriptionController = TextEditingController(
-      text: "This is a sample description."); // Pre-filled placeholder text.
-  final TextEditingController _locationController =
-      TextEditingController(text: "UW");
+  final TextEditingController _nameController = TextEditingController(); 
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
 
-  String _selectedCategory =
-      'General'; // Holds the currently selected category from the dropdown.
+  String _selectedCategory = 'General'; // Holds the currently selected category from the dropdown.
   String _itemCondition = 'Used'; // Default for item condition
   final List<File> _uploadedPhotos = []; // list of uploaded
-
   final ImagePicker _picker = ImagePicker();
+  bool isUploading = false; // To prevent the item from being uploaded multiple times
+
 
    // Method to pick an image from the camera or gallery
   Future<void> _pickImage(ImageSource source) async {
@@ -70,18 +67,16 @@ class _EntryItemViewState extends State<ItemEntryView> {
             crossAxisAlignment: CrossAxisAlignment
                 .start, // Aligns children to the start of the column.
             children: [
+              const Padding(padding: EdgeInsets.all(10.0)),
               // Input field for item name.
               Semantics(
-                label:
-                    'Item name input', // Accessibility label for screen readers.
+                label: 'Item name input', // Accessibility label for screen readers.
                 child: TextField(
-                  controller:
-                      _nameController, // Connects the input field to the TextEditingController.
+                  controller: _nameController, // Connects the input field to the TextEditingController.
                   decoration: const InputDecoration(
-                    labelText:
-                        'Item Name', // Text displayed above the input field.
-                    border:
-                        OutlineInputBorder(), // Draws a border around the input field.
+                    labelText: 'Item Name', // Text displayed above the input field.
+                    hintText: 'Enter item name',
+                    border: OutlineInputBorder(), // Draws a border around the input field.
                   ),
                 ),
               ),
@@ -92,23 +87,24 @@ class _EntryItemViewState extends State<ItemEntryView> {
               Semantics(
                 label: 'Item description input',
                 child: TextField(
-                  controller:
-                      _descriptionController, // Connects the input field to the TextEditingController.
+                  controller: _descriptionController, // Connects the input field to the TextEditingController.
                   decoration: const InputDecoration(
                     labelText: 'Description',
+                    hintText: 'Enter item description',
                     border: OutlineInputBorder(),
                   ),
                 ),
               ),
               const SizedBox(height: 20), // Adds vertical space.
 
-              // input field for location TODO:geolocater?
               Semantics(
-                  label: 'Location Input',
+                  label: 'Price Input',
                   child: TextField(
-                    controller: _locationController,
+                    controller: _priceController,
                     decoration: const InputDecoration(
-                      labelText: 'Location',
+                      labelText: 'Price',
+                      prefixText: '\$', // This adds the dollar sign in front of the input field
+                      hintText: '0.0',
                       border: OutlineInputBorder(),
                     ),
                   )),
@@ -272,11 +268,21 @@ class _EntryItemViewState extends State<ItemEntryView> {
                   ],
                 ),
               const SizedBox(height: 40),
-              // Save button.
-              Center(
+             _uploadItemButton(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  
+// Upload button.
+  Widget _uploadItemButton(BuildContext context){
+    return  Center(
                 child: Semantics(
                   label:
-                      'Save item button', // Accessibility label for screen readers.
+                      'Upload item button', // Accessibility label for screen readers.
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
@@ -285,18 +291,56 @@ class _EntryItemViewState extends State<ItemEntryView> {
                       backgroundColor:
                           Colors.teal, // Sets the button's background color.
                     ),
-                    onPressed: () {
-                      // Navigate directly to the main NavDemo widget (Home page) without simulating saving.
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const NavDemo(title: 'DawgDealz')),
-                        (route) =>
-                            false, // Clear all previous pages from the navigation stack.
-                      );
+                    onPressed: isUploading ? null : () async{
+                       setState(() {
+                          isUploading = true; // Set uploading state to true to disable the button.
+                       });
+                       if(_nameController.text!='' && _priceController.text!='' && double.tryParse(_priceController.text) != null){
+                        List<String> uploadedImageUrls = [];
+                        bool success = true;
+
+                        // Upload each photo and get its URL
+                        for (var image in _uploadedPhotos) {
+                          final imageUrl = await uploadItemImageForUser(image);
+                          if (imageUrl != null) {
+                            uploadedImageUrls.add(imageUrl);
+                          } else {
+                            success = false;
+                            break;
+                          }
+                        }
+
+                        if (success) {
+                          // Save metadata
+                          await saveItemData(
+                            _nameController.text,
+                            _descriptionController.text,
+                            _priceController.text,
+                            _selectedCategory,
+                            _itemCondition,
+                            uploadedImageUrls,
+                          );
+
+                          // Show success message and navigate to the home page
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Item added successfully!")));
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => const NavDemo(title: 'DawgDealz')),
+                            (route) => false,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Failed to upload item!")));
+                        }
+                       }else{
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Missing name or price (or invalid price)")));
+                       }
+                       setState(() {
+                          isUploading = false; // Reset uploading state after the process is complete.
+                      });
                     },
-                    child: const Text(
+                    child: isUploading
+                       ? const CircularProgressIndicator() // Show a progress indicator while uploading.
+                       : const Text(
                       'Add Item', // Text displayed inside the button.
                       style: TextStyle(
                         color: Colors.white, // Text color.
@@ -306,12 +350,9 @@ class _EntryItemViewState extends State<ItemEntryView> {
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+              );
   }
+  
+  
 }
 

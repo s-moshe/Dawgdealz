@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:navigation/views/custom_widget1.dart';
+import 'package:navigation/models/item_provider.dart';
+import 'package:navigation/views/home_page.dart';
 import 'package:navigation/views/item_entry_view.dart';
-import 'package:navigation/views/custom_widget3.dart';
-import 'package:navigation/views/custom_widget4.dart';
-import 'package:navigation/views/custom_widget5.dart';
+import 'package:navigation/views/account_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-
-
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:navigation/views/login.dart';
+import 'package:navigation/views/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-) ;
-  runApp(const MyApp());
+  );
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ItemProvider(), // Provide the single provider
+      child: const MyApp(),
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,12 +35,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const NavDemo(title: 'DawgDealz'),
+      home: LoginPage(),
     );
   }
 }
 
-//bladhflkahdf
 
 class NavDemo extends StatefulWidget {
   const NavDemo({super.key, required this.title});
@@ -70,9 +74,7 @@ class _NavDemoState extends State<NavDemo> {
         // This defines what is in the nav bar 
         destinations: const <Widget>[
           NavigationDestination(icon: Icon(Icons.home), label: 'Home' ),
-          NavigationDestination(icon: Icon(Icons.navigation), label: 'Discovery'),
           NavigationDestination(icon: Icon(Icons.add), label: 'New Listing'),
-          NavigationDestination(icon: Icon(Icons.favorite), label: 'Watching'),
           NavigationDestination(icon: Icon(Icons.import_contacts), label: 'Account')
         ],
       ),
@@ -80,17 +82,14 @@ class _NavDemoState extends State<NavDemo> {
       // Here we choose how to populate the body using the current value of _currentTabIndex
       body: Center(child: 
         switch (_currentTabIndex) {
-          0 => const CustomWidget1(),
-          1 => const CustomWidget3(),
-          2 => const ItemEntryView(),
-          3 => const CustomWidget4(),
-          4 => const CustomWidget5(name: 'Jane Doe',
+          0 => const HomePage(),
+          1 => const ItemEntryView(),
+          2 => const AccountView(name: 'Jane Doe',
             bio: 'Loves hiking, reading, and coding.',
             major: 'Computer Science',
             email: 'adanila',
-            gradDate: 2025,
-            ),
-          _ => const CustomWidget1()
+            gradDate: 2025),
+          _ => const HomePage()
         }
       )
     );

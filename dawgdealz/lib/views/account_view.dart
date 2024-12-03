@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:navigation/views/prof_edit.dart';
+import 'package:navigation/views/edit_profile.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:navigation/views/prof_edit.dart';
 //import 'package:flutter_email'
 
 
-class CustomWidget5 extends StatelessWidget {
+class AccountView extends StatelessWidget {
   final String name;
   final String bio;
   final String major;
@@ -14,7 +13,7 @@ class CustomWidget5 extends StatelessWidget {
   //final String pfpLink;
   //final String pfpDesc;
 
-  const CustomWidget5({
+  const AccountView({
     required this.name,
     required this.bio,
     required this.major,
