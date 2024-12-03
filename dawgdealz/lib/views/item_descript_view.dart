@@ -70,13 +70,13 @@ class ItemDescription extends StatelessWidget {
                 'Seller Name: John Doe',
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     // Implement email seller functionality here
                   },
-                  child: Text('Email Seller'),
+                  child: const Text('Email Seller'),
                 ),
               ),
             ],

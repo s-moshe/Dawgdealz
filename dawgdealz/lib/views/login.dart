@@ -17,16 +17,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextField(
               controller: _emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Email Address',
                 suffixText: '@uw.edu',
               ),
@@ -53,16 +53,16 @@ class _LoginPageState extends State<LoginPage> {
               ),
               obscureText: _obscureText,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 AuthService().signin(
                   context: context,
-                  email: _emailController.text + '@uw.edu',
+                  email: '${_emailController.text}@uw.edu',
                   password: _passwordController.text,
                 );
               },
-              child: Text('Sign In'),
+              child: const Text('Sign In'),
             ),
             TextButton(
               onPressed: () {
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                   MaterialPageRoute(builder: (context) => SignupPage()),
                 );
               },
-              child: Text('Need to create an account? Sign Up'),
+              child: const Text('Need to create an account? Sign Up'),
             ),
           ],
         ),
