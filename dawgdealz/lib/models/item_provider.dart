@@ -20,7 +20,7 @@ class ItemProvider extends ChangeNotifier {
 
     try {
       final querySnapshot = await FirebaseFirestore.instance
-          .collection('Items')
+          .collection('items')
           .orderBy('timestamp', descending: true)
           .get();
       _items = querySnapshot.docs
@@ -34,4 +34,25 @@ class ItemProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+Future<void> deleteItem(String itemId) async {
+   _isLoading = true;
+    notifyListeners();
+  try {
+    // Reference to the specific document
+    DocumentReference docRef = FirebaseFirestore.instance
+        .collection('items')
+        .doc(itemId); // Document ID to delete
+    // Delete the document
+    await docRef.delete();
+    print("Item deleted successfully");
+  } catch (e) {
+    print("Error deleting item: $e");
+  }finally {
+      _isLoading = false;
+      notifyListeners();
+  }
 }
+
+}
+

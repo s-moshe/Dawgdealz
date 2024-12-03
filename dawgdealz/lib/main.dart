@@ -5,6 +5,7 @@ import 'package:navigation/views/item_entry_view.dart';
 import 'package:navigation/views/account_view.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:navigation/views/user_listing.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -75,6 +76,7 @@ class _NavDemoState extends State<NavDemo> {
         destinations: const <Widget>[
           NavigationDestination(icon: Icon(Icons.home), label: 'Home' ),
           NavigationDestination(icon: Icon(Icons.add), label: 'New Listing'),
+          NavigationDestination(icon: Icon(Icons.upload), label: 'My Listing'),
           NavigationDestination(icon: Icon(Icons.import_contacts), label: 'Account')
         ],
       ),
@@ -84,7 +86,8 @@ class _NavDemoState extends State<NavDemo> {
         switch (_currentTabIndex) {
           0 => const HomePage(),
           1 => const ItemEntryView(),
-          2 => const AccountView(name: 'Jane Doe',
+          2 => const UserListing(),
+          3 => const AccountView(name: 'Jane Doe',
             bio: 'Loves hiking, reading, and coding.',
             major: 'Computer Science',
             email: 'adanila',

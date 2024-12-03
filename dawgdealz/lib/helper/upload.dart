@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:navigation/models/item.dart';
 
 Future<String?> uploadItemImageForUser(File file)async{
     try{
@@ -21,6 +22,7 @@ Future<String?> uploadItemImageForUser(File file)async{
 Future<void> saveItemData(String name, String description, String price, String category, String condition, List<String> imageUrls) async {
   final userId = FirebaseAuth.instance.currentUser?.uid;
   final itemData = {
+    'id': '',
     'name': name,
     'description': description,
     'price': price,
@@ -31,7 +33,10 @@ Future<void> saveItemData(String name, String description, String price, String 
     'timestamp': DateTime.now().toIso8601String(),
   };
 
-  // Save the data in Firestore under "Items" collection
- DocumentReference docRef = await FirebaseFirestore.instance.collection('Items').add(itemData);
- 
+ final firestore = FirebaseFirestore.instance;
+
+  // Add to "items" collection (for homepage)
+  final itemRef = await firestore.collection("items").add(itemData);
+ itemRef.update({'id':itemRef.id});
 }
+
