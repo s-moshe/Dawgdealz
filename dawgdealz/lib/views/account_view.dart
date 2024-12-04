@@ -109,7 +109,9 @@ class AccountView extends StatelessWidget {
                     userProfileProvider.userProfile!['name'],
                   ),
                   const SizedBox(height: 16),
-                 
+                  Text('Preferred Campus Meetup Spots:'),
+                  ..._buildMeetupSpots(userProfileProvider.userProfile!),
+                  const SizedBox(height: 16),
                   
                   _buildEditButton(context, userProfileProvider),
                   
@@ -121,6 +123,12 @@ class AccountView extends StatelessWidget {
   }
 
 
+List<Widget> _buildMeetupSpots(Map<String, dynamic> userProfile) {
+  final List<dynamic> spotsDynamic = userProfile['preferredMeetupSpots'] ?? [];
+  final List<String> spots = List<String>.from(spotsDynamic); // Cast dynamic to List<String>
+
+  return spots.map((spot) => Text('• $spot', style: const TextStyle(fontSize: 14))).toList();
+}
 
 
 

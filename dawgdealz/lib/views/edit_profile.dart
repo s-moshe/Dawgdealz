@@ -10,10 +10,12 @@ class EditProfileWidget extends StatefulWidget {
   final String major;
   final String email;
   final int gradDate;
+  final List<String> campusSpots = ['Red Square', 'Quad', 'Drumheller Fountain', 'North Campus Dorms', 'West Campus Dorms', 'Other/Off Campus'];
+  //late List<bool> selectedSpots;
 
   //adjfkhakljdfhaskjsdfh
 
-  const EditProfileWidget({
+  EditProfileWidget({
     required this.name,
     required this.bio,
     required this.major,
@@ -31,6 +33,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   late TextEditingController majorController;
   late TextEditingController emailController;
   late TextEditingController gradDateController;
+  late List<bool> selectedSpots;
+  
 
   final FirestoreCrud firestore = FirestoreCrud();
 
@@ -42,6 +46,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     majorController = TextEditingController(text: widget.major);
     emailController = TextEditingController(text: widget.email);
     gradDateController = TextEditingController(text: widget.gradDate.toString());
+    selectedSpots = List<bool>.filled(widget.campusSpots.length, false);
+
+    _initializeSelectedSpots(); // Fetch data and update selectedSpots
   }
 
   @override
@@ -70,47 +77,36 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             _buildTextField('Major', majorController),
             _buildEmailField('Email', emailController),
             _buildTextField('Graduation Year', gradDateController, isNumber: true),
+            _buildMeetupSpots(),
             
           
             ElevatedButton(
-              /*
-              onPressed: () {
-                // Handle save action
-                _saveProfile(); // Call _saveProfile when clicked
-        
-                print('Updated Profile:');
-                print('Name: ${nameController.text}');
-                print('Bio: ${bioController.text}');
-                print('Major: ${majorController.text}');
-                print('Email: ${emailController.text}');
-                print('Graduation Year: ${gradDateController.text}');
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CustomWidget5(
-                      name: nameController.text,
-                      bio: bioController.text,
-                      major: majorController.text,
-                      email: emailController.text,
-                      gradDate: int.parse(gradDateController.text),
-                    ),
-                  ),
-                ); */             
-              },
-              child: const Text('Save'),*/
               
                onPressed: () async {
+                final List<String> selectedMeetupSpots = [];
+                for (int i = 0; i < widget.campusSpots.length; i++) {
+                  if (selectedSpots[i]) {
+                    selectedMeetupSpots.add(widget.campusSpots[i]);
+                  }
+                }
+
                 final updatedData = {
                   'name': nameController.text.trim(),
                   'bio': bioController.text.trim(),
                   'major': majorController.text.trim(),
                   'email': emailController.text.trim(),
                   'gradDate': int.tryParse(gradDateController.text.trim()) ?? 2025,
-                };
-                await userProfileProvider.updateUserProfile(
-                  FirebaseAuth.instance.currentUser!.uid,
-                  updatedData,
-                );
+                  'preferredMeetupSpots': selectedMeetupSpots, // Add the selected spots here
+                  };
+
+                  await userProfileProvider.updateUserProfile(
+                    FirebaseAuth.instance.currentUser!.uid,
+                    updatedData,
+                  );
+
+                  // Print to debug the updatedData map
+                  print('Updated data: $updatedData');
+                
                 Navigator.pop(context);
               },
               child: const Text('Save'),
@@ -122,42 +118,31 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     );
   }
 
-  Future<void> _saveProfile() async {
-    final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+  Future<void> _initializeSelectedSpots() async {
+  final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-    if (userId.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Error: User not logged in.')),
-      );
-      return;
-    }
-
-    final Map<String, dynamic> updatedData = {
-      'name': nameController.text.trim(),
-      'bio': bioController.text.trim(),
-      'major': majorController.text.trim(),
-      'email': emailController.text.trim(),
-      'gradDate': int.tryParse(gradDateController.text.trim()) ?? 2025,
-    };
-
-    try {
-      await firestore.updateUserProfile(userId, updatedData);
-      print('Firestore Profile Updated:');
-      print('Name: ${nameController.text}');
-      print('Bio: ${bioController.text}');
-      print('Major: ${majorController.text}');
-      print('Email: ${emailController.text}');
-      print('Graduation Year: ${gradDateController.text}');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully!')),
-      );
-      Navigator.pop(context, true); // Go back to the previous screen
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating profile: $e')),
-      );
-    }
+  if (userId.isEmpty) {
+    print('Error: User not logged in.');
+    return;
   }
+
+  try {
+    // Fetch preferred meetup spots from Firestore
+    
+    final List<dynamic> spotsDynamic = await firestore.getMeetupSpots(userId);
+    print('Fetched meetup spots: $spotsDynamic');
+    final List<String> meetupSpots = spotsDynamic.cast<String>(); // Cast dynamic to List<String>
+
+    setState(() {
+      for (int i = 0; i < widget.campusSpots.length; i++) {
+        selectedSpots[i] = meetupSpots.contains(widget.campusSpots[i]);
+      }
+    });
+  } catch (e) {
+    print('Error initializing preferred meetup spots: $e');
+  }
+}
+
 
   Widget _buildTextField(String label, TextEditingController controller, {bool isNumber = false}) {
     return Column(
@@ -180,6 +165,33 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       ],
     );
   }
+
+  Widget _buildMeetupSpots() {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      const Text(
+        'Preferred Campus Meetup Spots:',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+      const SizedBox(height: 8),
+      ...List.generate(widget.campusSpots.length, (index) {
+        return CheckboxListTile(
+          title: Text(widget.campusSpots[index]),
+          value: selectedSpots[index],
+          onChanged: (bool? value) {
+            setState(() {
+              selectedSpots[index] = value ?? false;
+              print('Selected Spots: $selectedSpots'); // Debug output
+            });
+          },
+        );
+      }),
+      const SizedBox(height: 16),
+    ],
+  );
+}
+
   Widget _buildEmailField(String label, TextEditingController controller) {
   const String emailDomain = '@uw.edu'; // Hardcoded domain
 

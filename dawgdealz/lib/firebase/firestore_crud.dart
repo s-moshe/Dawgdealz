@@ -17,6 +17,7 @@ class FirestoreCrud {
         'email': 'default',
         'major': 'Undeclared',
         'gradDate': 2025,
+        'preferredMeetupSpots': ['Red Square', 'Quad', 'Other'],
       });
       print('User added successfully!');
     } catch (e) {
@@ -47,6 +48,21 @@ class FirestoreCrud {
       rethrow;
     }
   }
+
+  Future<List<String>> getMeetupSpots(String userId) async {
+  try {
+    final DocumentSnapshot profile = await _firestore.collection('users').doc(userId).get();
+
+    final data = profile.data() as Map<String, dynamic>?;
+
+    final List<dynamic>? meetupSpots = data?['preferredMeetupSpots'] as List<dynamic>?;
+    return meetupSpots?.map((e) => e.toString()).toList() ?? [];
+  } catch (e) {
+    print('Error fetching meetup spots: $e');
+    return [];
+  }
+}
+
 
 
   // Listings

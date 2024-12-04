@@ -26,6 +26,7 @@ class UserProfileProvider extends ChangeNotifier {
           'email': 'default',
           'major': 'Undeclared',
           'gradDate': 2025,
+          'preferredMeetupSpots': ['Red Square', 'Quad', 'Other'],
         };
       }
       notifyListeners();

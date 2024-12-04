@@ -25,6 +25,8 @@ class SellerProfileView extends StatelessWidget {
             return const Center(child: Text('Seller profile not found.'));
           } else {
             final data = snapshot.data!.data() as Map<String, dynamic>;
+            final List<dynamic> spotsDynamic = data['preferredMeetupSpots'] ?? [];
+            final List<String> preferredMeetupSpots = spotsDynamic.cast<String>();
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -36,6 +38,21 @@ class SellerProfileView extends StatelessWidget {
                     'Consider reaching out to the seller directly to learn more about their location or their availability, inquire about their services, or to leave a review. Some sellers may be open to selling items in bundles!',
                     style: const TextStyle(fontSize: 18),
                   ),
+                  const SizedBox(height: 16),
+                   const SizedBox(height: 16),
+                  const Text(
+                    'Preferred Campus Meetup Spots:',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  preferredMeetupSpots.isNotEmpty
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: preferredMeetupSpots
+                              .map((spot) => Text('- $spot', style: const TextStyle(fontSize: 14)))
+                              .toList(),
+                        )
+                      : const Text('No preferred meetup spots listed.'),
                   const SizedBox(height: 16),
                   _buildEmailText(context, data['email'], data['name']),
                   const SizedBox(height: 16),
