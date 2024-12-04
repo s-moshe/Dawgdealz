@@ -1,10 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:navigation/models/item.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ItemDescription extends StatelessWidget {
+class ItemDescription extends StatefulWidget {
   final Item item;
 
   const ItemDescription({super.key, required this.item});
+
+  @override
+  State<ItemDescription> createState() => _ItemDescriptionState();
+}
+
+class _ItemDescriptionState extends State<ItemDescription> {
+  String sellerName = 'Unknown';
+  String sellerEmail = 'unknown';
+
+  void initState() {
+    super.initState();
+    fetchSellerInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +37,11 @@ class ItemDescription extends StatelessWidget {
               SizedBox(
                 height: 200, // Set the height of the image slider
                 child: PageView.builder(
-                  itemCount: item.images.length, // Total number of images
+                  itemCount: widget.item.images.length, // Total number of images
                   itemBuilder: (context, index) {
                     return ClipRect(
                       child: Image.network(
-                        item.images[index], // Load each image
+                        widget.item.images[index], // Load each image
                         height: 500,
                         width:  double.infinity,
                         fit: BoxFit.cover,
@@ -37,44 +52,45 @@ class ItemDescription extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                item.name,
+                widget.item.name,
                 style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
-                'Item Description: ${item.description}',
+                'Item Description: ${widget.item.description}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               Text(
-                'Listed Date: ${item.listedDate}',
+                'Listed Date: ${widget.item.listedDate}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               Text(
-                'Price: \$${item.price}',
+                'Price: \$${widget.item.price}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               Text(
-                'Condition: ${item.condition}',
+                'Condition: ${widget.item.condition}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
               Text(
-                'Category: ${item.category}',
+                'Category: ${widget.item.category}',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 10),
-              const Text(
-                'Seller Name: John Doe',
+              Text(
+                'Seller Name: $sellerName',
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    // Implement email seller functionality here
+                    sendEmail(sellerEmail);
+                  
                   },
                   child: const Text('Email Seller'),
                 ),
@@ -85,4 +101,44 @@ class ItemDescription extends StatelessWidget {
       ),
     );
   }
+
+  Future<void> fetchSellerInfo() async {
+    try {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.item.userId)
+          .get();
+      if (snapshot.exists) {
+        final data = snapshot.data() as Map<String, dynamic>;
+        setState(() {
+          sellerName = data['name'] ?? 'Unknown';
+          sellerEmail = data['email'] ?? 'unknown';
+        });
+      } else {
+        print('Seller not found.');
+      }
+    } catch (e) {
+      print('Error fetching seller info: $e');
+    }
+  }
+
+  Future<void> sendEmail(String email) async {
+    final Email emailDetails = Email(
+      body: 'Hi there,\n\nThis is a test email.',
+      subject: 'Hello',
+      recipients: ['$email@uw.edu'],
+      cc: [],
+      bcc: [],
+      isHTML: false, // Set to true if the email body contains HTML
+    );
+
+
+    try {
+      await FlutterEmailSender.send(emailDetails);
+      print('Email sent successfully!');
+    } catch (error) {
+      print('Failed to send email: $error');
+    }
+  }
+
 }

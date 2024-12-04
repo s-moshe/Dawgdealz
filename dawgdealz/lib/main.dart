@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:navigation/models/item_provider.dart';
+import 'package:navigation/models/profile_provider.dart';
 import 'package:navigation/views/home_page.dart';
 import 'package:navigation/views/item_entry_view.dart';
 import 'package:navigation/views/account_view.dart';
@@ -17,8 +18,17 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
+    /*ChangeNotifierProvider(
       create: (_) => ItemProvider(), // Provide the single provider
+      child: const MyApp(),
+
+
+    )*/
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create : (_) => ItemProvider()),
+        ChangeNotifierProvider(create : (_) => UserProfileProvider()),
+      ],
       child: const MyApp(),
     )
   );
@@ -86,11 +96,7 @@ class _NavDemoState extends State<NavDemo> {
           0 => const HomePage(),
           1 => const ItemEntryView(),
           2 => const UserListing(),
-          3 => const AccountView(name: 'Jane Doe',
-            bio: 'Loves hiking, reading, and coding.',
-            major: 'Computer Science',
-            email: 'adanila',
-            gradDate: 2025),
+          3 => AccountView(),
           _ => const HomePage()
         }
       )

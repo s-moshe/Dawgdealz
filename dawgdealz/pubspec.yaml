@@ -45,6 +45,7 @@ dependencies:
   provider: ^6.1.2
   intl: ^0.20.1
   firebase_database: ^11.1.6
+  flutter_email_sender: ^6.0.3
 
 dev_dependencies:
   flutter_test:

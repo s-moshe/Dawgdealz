@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:navigation/firebase/firestore_crud.dart';
+import 'package:navigation/models/profile_provider.dart';
+import 'package:provider/provider.dart';
 
 class EditProfileWidget extends StatefulWidget {
   final String name;
@@ -28,6 +32,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   late TextEditingController emailController;
   late TextEditingController gradDateController;
 
+  final FirestoreCrud firestore = FirestoreCrud();
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +56,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
@@ -63,35 +70,93 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             _buildTextField('Major', majorController),
             _buildEmailField('Email', emailController),
             _buildTextField('Graduation Year', gradDateController, isNumber: true),
-            const SizedBox(height: 16.0),
+            
+          
             ElevatedButton(
+              /*
               onPressed: () {
                 // Handle save action
+                _saveProfile(); // Call _saveProfile when clicked
+        
                 print('Updated Profile:');
                 print('Name: ${nameController.text}');
                 print('Bio: ${bioController.text}');
                 print('Major: ${majorController.text}');
                 print('Email: ${emailController.text}');
                 print('Graduation Year: ${gradDateController.text}');
-
-/*Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => CustomWidget5(
-      name: nameController.text,
-      bio: bioController.text,
-      major: majorController.text,
-      email: emailController.text,
-      gradDate: int.parse(gradDateController.text),
-    ),
-  ),
-); */             },
+                /*Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CustomWidget5(
+                      name: nameController.text,
+                      bio: bioController.text,
+                      major: majorController.text,
+                      email: emailController.text,
+                      gradDate: int.parse(gradDateController.text),
+                    ),
+                  ),
+                ); */             
+              },
+              child: const Text('Save'),*/
+              
+               onPressed: () async {
+                final updatedData = {
+                  'name': nameController.text.trim(),
+                  'bio': bioController.text.trim(),
+                  'major': majorController.text.trim(),
+                  'email': emailController.text.trim(),
+                  'gradDate': int.tryParse(gradDateController.text.trim()) ?? 2025,
+                };
+                await userProfileProvider.updateUserProfile(
+                  FirebaseAuth.instance.currentUser!.uid,
+                  updatedData,
+                );
+                Navigator.pop(context);
+              },
               child: const Text('Save'),
+      
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future<void> _saveProfile() async {
+    final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    if (userId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error: User not logged in.')),
+      );
+      return;
+    }
+
+    final Map<String, dynamic> updatedData = {
+      'name': nameController.text.trim(),
+      'bio': bioController.text.trim(),
+      'major': majorController.text.trim(),
+      'email': emailController.text.trim(),
+      'gradDate': int.tryParse(gradDateController.text.trim()) ?? 2025,
+    };
+
+    try {
+      await firestore.updateUserProfile(userId, updatedData);
+      print('Firestore Profile Updated:');
+      print('Name: ${nameController.text}');
+      print('Bio: ${bioController.text}');
+      print('Major: ${majorController.text}');
+      print('Email: ${emailController.text}');
+      print('Graduation Year: ${gradDateController.text}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully!')),
+      );
+      Navigator.pop(context, true); // Go back to the previous screen
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating profile: $e')),
+      );
+    }
   }
 
   Widget _buildTextField(String label, TextEditingController controller, {bool isNumber = false}) {
@@ -139,9 +204,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             ),
           ),
           const SizedBox(width: 8),
-          const Text(
+          Text(
             emailDomain,
-            style: TextStyle(fontSize: 16),
+            style: const TextStyle(fontSize: 16),
           ),
         ],
       ),
@@ -150,25 +215,4 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   );
 }
 }
-/*
-void main() {
-  runApp(const MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: EditProfileWidget(
-        name: '',
-        bio: '',
-        major: '',
-        email: '',
-        gradDate: 2025,
-      ),
-    );
-  }
-}*/
