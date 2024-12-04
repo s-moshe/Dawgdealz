@@ -110,15 +110,6 @@ class AccountView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                  
-                  //_buildTestUrlLauncher(context),
-                 /* const SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      sendEmail(userProfileProvider.userProfile!['email']); 
-                    },
-                    child: const Text('Send Email with Flutter Email Sender'),
-                  ),*/
-                  //ElevatedButton
                   
                   _buildEditButton(context, userProfileProvider),
                   
@@ -137,7 +128,7 @@ class AccountView extends StatelessWidget {
 Future<void> sendEmail(String email) async {
     final Email emailDetails = Email(
       body: 'Hi there,\n\nI saw your profile on DawgDealx and wanted to reach out! \n\n (Consider the following options to discuss: I want to buy items in a bundle, I want to discuss a meet-up spot, I want to rent an item instead of buying, I want to send an offer on an item, I want to give you a review as a buyer, etc.) \n\n ...',
-      subject: 'Hello - Dawg Dealz Request',
+      subject: 'Hello - Dawg Dealz Inquiry',
       recipients: ['$email@uw.edu'],
       cc: [],
       bcc: [],

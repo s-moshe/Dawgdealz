@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:navigation/models/item.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:navigation/views/seller_profile_view.dart';
 
 class ItemDescription extends StatefulWidget {
   final Item item;
@@ -86,6 +87,18 @@ class _ItemDescriptionState extends State<ItemDescription> {
                 style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
+              Center(
+                child:
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SellerProfileView(sellerId: widget.item.userId),
+                  ),);
+                },
+                child: const Text('View Seller Profile'),
+              )),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
