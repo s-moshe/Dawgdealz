@@ -8,9 +8,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:navigation/views/user_listing.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:navigation/views/login.dart';
-import 'package:navigation/views/signup.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +60,7 @@ class _NavDemoState extends State<NavDemo> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.title),
+        title: Text(widget.title, style: const TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index){

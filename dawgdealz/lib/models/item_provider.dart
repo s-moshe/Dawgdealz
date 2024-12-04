@@ -24,7 +24,7 @@ class ItemProvider extends ChangeNotifier {
           .orderBy('timestamp', descending: true)
           .get();
       _items = querySnapshot.docs
-          .map((doc) => Item.fromMap(doc.data()))
+          .map((doc) => Item.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
       print('Error fetching items: $error');
@@ -45,6 +45,7 @@ Future<void> deleteItem(String itemId) async {
         .doc(itemId); // Document ID to delete
     // Delete the document
     await docRef.delete();
+    _items.removeWhere((item)=>item.id==itemId);
     print("Item deleted successfully");
   } catch (e) {
     print("Error deleting item: $e");

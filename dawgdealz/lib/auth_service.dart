@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:navigation/main.dart';
-import 'package:navigation/views/home_page.dart';
 
 class AuthService {
 
@@ -80,6 +78,7 @@ class AuthService {
         fontSize: 16.0
       );
 
+    // ignore: unused_catch_clause
     } on FirebaseAuthException catch (e) {
       String message = 'An error occured, please try logging in again.';
       
