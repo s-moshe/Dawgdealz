@@ -124,8 +124,8 @@ class _ItemDescriptionState extends State<ItemDescription> {
 
   Future<void> sendEmail(String email) async {
     final Email emailDetails = Email(
-      body: 'Hi there,\n\nThis is a test email.',
-      subject: 'Hello',
+      body: 'Hi there,\n\n I am interested in buying this item and wanted to reach out! \n\n Is it still available? Let us talk about a meeting time and place. \n\n (Consider personalizing your message, you are more likely to get a response!)...',
+      subject: '${widget.item.name} - Dawg Dealz Request',
       recipients: ['$email@uw.edu'],
       cc: [],
       bcc: [],

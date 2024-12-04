@@ -23,7 +23,7 @@ class UserProfileProvider extends ChangeNotifier {
         _userProfile = {
           'name': 'Default Name',
           'bio': 'Default Bio',
-          'email': 'default@example.com',
+          'email': 'default',
           'major': 'Undeclared',
           'gradDate': 2025,
         };

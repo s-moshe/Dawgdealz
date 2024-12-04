@@ -103,8 +103,6 @@ class AccountView extends StatelessWidget {
                   Text('Major: ${userProfileProvider.userProfile!['major'] ?? 'Unknown'}'),
                   Text('Year: ${userProfileProvider.userProfile!['gradDate'] ?? 'Unknown'}'),
                   Text('About Me: ${userProfileProvider.userProfile!['bio'] ?? 'Unknown'}'),
-
-                  Text('This should send an email with mailto:'),
                   _buildEmailText(
                     context,
                     userProfileProvider.userProfile!['email'],
@@ -112,19 +110,16 @@ class AccountView extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                  
-                  _buildTestUrlLauncher(context),
-                  const SizedBox(height: 16.0),
+                  //_buildTestUrlLauncher(context),
+                 /* const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () {
-                      sendEmail(userProfileProvider.userProfile!['email']); // replace with actual seller email later
+                      sendEmail(userProfileProvider.userProfile!['email']); 
                     },
                     child: const Text('Send Email with Flutter Email Sender'),
-                  ),
-                  //ElevatedButton(
-                   
-                    const SizedBox(height: 16.0),
-                    
-                    const SizedBox(height: 16.0),
+                  ),*/
+                  //ElevatedButton
+                  
                   _buildEditButton(context, userProfileProvider),
                   
                 ],
@@ -135,37 +130,18 @@ class AccountView extends StatelessWidget {
   }
 
 
-/*
-  void checkBrowserIntent() async {
-    final AndroidIntent intent = AndroidIntent(
-      action: 'android.intent.action.VIEW',
-      data: 'https://www.google.com',
-    );
-    final bool? canResolve = await intent.canResolveActivity();
-    print('Can resolve browser intent: $canResolve');
-  }
-
-
-  void checkMailtoIntent() async {
-    final AndroidIntent intent = AndroidIntent(
-      action: 'android.intent.action.SENDTO',
-      data: 'mailto:test@example.com',
-    );
-    final bool? canResolve = await intent.canResolveActivity();
-    print('Can resolve mailto intent: $canResolve');
-  }*/
 
 
 
 
 Future<void> sendEmail(String email) async {
     final Email emailDetails = Email(
-      body: 'Hi there,\n\nThis is a test email.',
-      subject: 'Hello',
+      body: 'Hi there,\n\nI saw your profile on DawgDealx and wanted to reach out! \n\n (Consider the following options to discuss: I want to buy items in a bundle, I want to discuss a meet-up spot, I want to rent an item instead of buying, I want to send an offer on an item, I want to give you a review as a buyer, etc.) \n\n ...',
+      subject: 'Hello - Dawg Dealz Request',
       recipients: ['$email@uw.edu'],
       cc: [],
       bcc: [],
-      isHTML: false, // Set to true if the email body contains HTML
+      isHTML: false, 
     );
 
 
@@ -238,7 +214,7 @@ void _openEmail(BuildContext context, String email, String userName) async {
     final Uri emailUri = Uri(
       scheme: 'mailto',
       path: '$email@uw.edu',
-      query: 'subject=Hello&body=Hi $userName,',
+      query: 'subject=Hello - Dawg Dealz Request&body=Hi $userName,\n\n I saw your profile on DawgDealx and wanted to reach out! \n\n (Consider the following options to discuss: I want to buy items in a bundle, I want to discuss a meet-up spot, I want to rent an item instead of buying, I want to send an offer on an item, I want to give you a review as a buyer, etc.) \n\n ...',
     );
 
 
