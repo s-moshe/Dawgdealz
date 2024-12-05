@@ -3,6 +3,7 @@ import 'package:navigation/models/item.dart';
 //import 'package:flutter_email_sender/flutter_email_sender.dart'; //not used
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:navigation/views/seller_profile_view.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemDescription extends StatefulWidget {
   final Item item;
@@ -103,8 +104,8 @@ class _ItemDescriptionState extends State<ItemDescription> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    
                     sendEmail(sellerEmail);
-                  
                   },
                   child: const Text('Email Seller'),
                 ),
@@ -138,24 +139,20 @@ class _ItemDescriptionState extends State<ItemDescription> {
   
   
   Future<void> sendEmail(String email) async {
-    // THIS IS NOT USED , COMMENTING - AYNUR
-
-    // final Email emailDetails = Email(
-    //   body: 'Hi there,\n\n I am interested in buying this item and wanted to reach out! \n\n Is it still available? Let us talk about a meeting time and place. \n\n (Consider personalizing your message, you are more likely to get a response!)...',
-    //   subject: '${widget.item.name} - Dawg Dealz Request',
-    //   recipients: ['$email@uw.edu'],
-    //   cc: [],
-    //   bcc: [],
-    //   isHTML: false, // Set to true if the email body contains HTML
-    // );
-
-
-    // try {
-    //   await FlutterEmailSender.send(emailDetails);
-    //   print('Email sent successfully!');
-    // } catch (error) {
-    //   print('Failed to send email: $error');
-    // }
+  final Uri emailUri = Uri(
+    scheme: 'mailto',
+    path: '$email@uw.edu',
+    queryParameters: {
+      'subject': 'DawgDealz - Item Inquiry',
+      'body': 'Hi $sellerName, I am interested in your item: ${widget.item.name}.',
+    },
+  );
+  if (await canLaunch(emailUri.toString())) {
+    await launch(emailUri.toString());
+  } else {
+    
   }
+}
+
 
 }

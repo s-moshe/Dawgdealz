@@ -2,36 +2,59 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:navigation/helper/upload.dart';
-import 'package:navigation/main.dart'; // Import the file where NavDemo is defined, which represents the main app structure.
+import 'package:navigation/main.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 class ItemEntryView extends StatefulWidget {
-  const ItemEntryView(
-      {super.key}); // A StatefulWidget because the state (inputs) can change.
+  
+  const ItemEntryView({super.key}); 
 
   @override
   State<ItemEntryView> createState() => _EntryItemViewState();
 }
 
-// This class manages the state (data and UI behavior) of the ItemEntryView.
 class _EntryItemViewState extends State<ItemEntryView> {
-  // TextEditingController allows us to control the text inside the input fields.
   final TextEditingController _nameController = TextEditingController(); 
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
 
-  String _selectedCategory = 'General'; // Holds the currently selected category from the dropdown.
-  String _itemCondition = 'Used'; // Default for item condition
-  final List<File> _uploadedPhotos = []; // list of uploaded
+  String _selectedCategory = 'General'; 
+  String _itemCondition = 'Used'; 
+  final List<File> _uploadedPhotos = []; 
   final ImagePicker _picker = ImagePicker();
-  bool isUploading = false; // To prevent the item from being uploaded multiple times
+  bool isUploading = false; 
 
-
-   // Method to pick an image from the camera or gallery
   Future<void> _pickImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
     if (image != null) {
       setState(() {
-        _uploadedPhotos.add(File(image.path));  // Add the image file to the list of uploaded photos
+        _uploadedPhotos.add(File(image.path));  
+      });
+    }
+  }
+
+  // Generate description using Gemini model
+  Future<void> _generateDescription() async {
+ 
+
+    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: 'AIzaSyDAWK6ZMfj3W_iE4vpcN1lPcF5kzr3qEXs');
+    final content = [Content.text('Give me a short description about ${_nameController.text} using two sentences.')];
+    
+    try {
+      if (_nameController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter an item name for AI description.')),
+      );
+      } else {
+      final response = await model.generateContent(content);
+      setState(() {
+        _descriptionController.text = response.text.toString();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Successfully generated AI description!')));
+      });
+      }
+    } catch (e) {
+      print('Error generating description: $e');
+      setState(() {
+        _descriptionController.text = 'Failed to generate description.';
       });
     }
   }
@@ -39,55 +62,54 @@ class _EntryItemViewState extends State<ItemEntryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-            'Add New Item'), // AppBar displays the title of the page.
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Back button icon.
-          onPressed: () {
-            // When the back button is pressed, navigate back to NavDemo (main app with tabs).
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const NavDemo(
-                      title: 'DawgDealz')), // Navigate to NavDemo.
-              (route) => false, // Clear all previous screens from the stack.
-            );
-          },
-          tooltip:
-              'Go back', // Tooltip text shown when hovering over the button.
-        ),
-      ),
+      
       body: Padding(
-        padding: const EdgeInsets.all(
-            16.0), // Adds space around the content inside the screen.
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
-          // Allows the screen to scroll if the content exceeds the height of the screen.
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment
-                .start, // Aligns children to the start of the column.
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(padding: EdgeInsets.all(10.0)),
-              // Input field for item name.
               Semantics(
-                label: 'Item name input', // Accessibility label for screen readers.
+                label: 'Item name input',
                 child: TextField(
-                  controller: _nameController, // Connects the input field to the TextEditingController.
+                  controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: 'Item Name', // Text displayed above the input field.
+                    labelText: 'Item Name',
                     hintText: 'Enter item name',
-                    border: OutlineInputBorder(), // Draws a border around the input field.
+                    border: OutlineInputBorder(),
                   ),
                 ),
               ),
-              const SizedBox(
-                  height: 20), // Adds vertical space between widgets.
+              const SizedBox(height: 20),
 
-              // Input field for item description.
+              // Button to generate description using Gemini AI.
+              Semantics(
+                label: 'Gemini AI Description Generator',
+                child: Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      overlayColor: Colors.white
+                    ),
+                    onPressed: () {
+                      // Trigger the function to generate the description.
+                      _generateDescription();
+                    },
+                    child: const Text(
+                      'Gemini AI Description 🤖', // Added robot emoji
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+
               Semantics(
                 label: 'Item description input',
                 child: TextField(
-                  controller: _descriptionController, // Connects the input field to the TextEditingController.
+                  keyboardType: TextInputType.multiline,
+                  controller: _descriptionController,
                   decoration: const InputDecoration(
                     labelText: 'Description',
                     hintText: 'Enter item description',
@@ -95,109 +117,91 @@ class _EntryItemViewState extends State<ItemEntryView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20), // Adds vertical space.
-
-              Semantics(
-                  label: 'Price Input',
-                  child: TextField(
-                    controller: _priceController,
-                    decoration: const InputDecoration(
-                      labelText: 'Price',
-                      prefixText: '\$', // This adds the dollar sign in front of the input field
-                      hintText: '0.00',
-                      border: OutlineInputBorder(),
-                    ),
-                  )),
               const SizedBox(height: 20),
 
-              // Dropdown menu for selecting a category.
               Semantics(
-                label:
-                    'Category selection dropdown', // Accessibility label for screen readers.
+                label: 'Price Input',
+                child: TextField(
+                  controller: _priceController,
+                  decoration: const InputDecoration(
+                    labelText: 'Price',
+                    prefixText: '\$',
+                    hintText: '0',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              Semantics(
+                label: 'Category selection dropdown',
                 child: DropdownButtonFormField<String>(
-                  value: _selectedCategory, // The currently selected category.
+                  value: _selectedCategory,
                   items: [
-                    'General',
-                    'Clothes',
-                    'Books',
-                    'Office Supplies',
-                    'Dorm Furnitures',
-                    'Tickets & School Events'
-                  ] // Dropdown menu options.
-                      .map((category) => DropdownMenuItem(
-                            value:
-                                category, // Value associated with this option.
-                            child: Text(
-                                category), // Text displayed for this option.
-                          ))
-                      .toList(),
+                    'General', 'Clothes', 'Books', 'Office Supplies', 'Dorm Furnitures', 'Tickets & School Events'
+                  ].map((category) => DropdownMenuItem(value: category, child: Text(category))).toList(),
                   onChanged: (value) {
-                    // Update _selectedCategory whenever a new category is selected.
                     setState(() {
-                      _selectedCategory = value ??
-                          'General'; // Default to 'General' if value is null.
+                      _selectedCategory = value ?? 'General';
                     });
                   },
                   decoration: const InputDecoration(
-                    labelText:
-                        'Category', // Text displayed above the dropdown menu.
-                    border:
-                        OutlineInputBorder(), // Draws a border around the dropdown.
+                    labelText: 'Category',
+                    border: OutlineInputBorder(),
                   ),
-                ), //sfjsalhfa
+                ),
               ),
-              const SizedBox(height: 40), // Adds vertical space.
+              const SizedBox(height: 10),
 
-              // radio buttons for used / new conditions
               Semantics(
-                  label: 'Condition Selection',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Condition',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: RadioListTile<String>(
-                              title: const Text('New'),
-                              value: 'New',
-                              groupValue: _itemCondition,
-                              onChanged: (value) {
-                                setState(() {
-                                  _itemCondition = value!;
-                                });
-                              },
-                            ),
+                label: 'Condition Selection',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Condition',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: RadioListTile<String>(
+                            title: const Text('New'),
+                            value: 'New',
+                            groupValue: _itemCondition,
+                            onChanged: (value) {
+                              setState(() {
+                                _itemCondition = value!;
+                              });
+                            },
                           ),
-                          Expanded(
-                            child: RadioListTile<String>(
-                              title: const Text('Used'),
-                              value: 'Used',
-                              groupValue: _itemCondition,
-                              onChanged: (value) {
-                                setState(() {
-                                  _itemCondition = value!;
-                                });
-                              },
-                            ),
-                            
-                            )
-                        ],
-                      )
-                    ],
-                  )),
-                  const SizedBox(height: 20),
-                  // Button to add photos.
-              Semantics(
-                label: 'Add photos button',
+                        ),
+                        Expanded(
+                          child: RadioListTile<String>(
+                            title: const Text('Used'),
+                            value: 'Used',
+                            groupValue: _itemCondition,
+                            onChanged: (value) {
+                              setState(() {
+                                _itemCondition = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              Center(
                 child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    overlayColor: Colors.white
+                  ),
                   onPressed: () {
-                    // Placeholder logic for adding photos.
-                     // Show a dialog to choose between camera or gallery
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
@@ -206,14 +210,14 @@ class _EntryItemViewState extends State<ItemEntryView> {
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              _pickImage(ImageSource.camera);  // Take a picture
+                              _pickImage(ImageSource.camera);  
                             },
                             child: const Text('Camera'),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.pop(context);
-                              _pickImage(ImageSource.gallery);  // Pick from gallery
+                              _pickImage(ImageSource.gallery);  
                             },
                             child: const Text('Gallery'),
                           ),
@@ -221,13 +225,10 @@ class _EntryItemViewState extends State<ItemEntryView> {
                       ),
                     );
                   },
-                  icon: const Icon(Icons.photo), // Icon for the button.
-                  label: const Text('Add Photo'),
+                  icon: const Icon(Icons.photo, color: Colors.white),
+                  label: const Text('Add Photo', style: TextStyle(color: Colors.white)),
                 ),
               ),
-              const SizedBox(height: 10),
-
-              // Display uploaded photos (placeholder).
               if (_uploadedPhotos.isNotEmpty)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,39 +237,39 @@ class _EntryItemViewState extends State<ItemEntryView> {
                       'Uploaded Photos:',
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                   Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: _uploadedPhotos.map((photo) {
-                      return Stack(
-                        alignment: Alignment.topRight,
-                        children: [
-                          Container(
-                            width: 100, // Adjust width.
-                            height: 100, // Adjust height.
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              image: DecorationImage(
-                                image: FileImage(photo),
-                                fit: BoxFit.cover,
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: _uploadedPhotos.map((photo) {
+                        return Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: FileImage(photo),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.close, color: Colors.red),
-                            onPressed: () {
-                              setState(() {
-                                _uploadedPhotos.remove(photo); // Remove photo when delete icon is clicked.
-                              });
-                            },
-                          ),
-                        ],
-                      );
-                    }).toList(),
+                            IconButton(
+                              icon: const Icon(Icons.close, color: Colors.red),
+                              onPressed: () {
+                                setState(() {
+                                  _uploadedPhotos.remove(photo); 
+                                });
+                              },
+                            ),
+                          ],
+                        );
+                      }).toList(),
                     ),
                   ],
                 ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
               Center(
                 child: _uploadItemButton(context),
               ),
@@ -279,8 +280,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
     );
   }
 
-  
-Widget _uploadItemButton(BuildContext context) {
+  Widget _uploadItemButton(BuildContext context) {
   return Center(
     child: Semantics(
       label: 'Upload item button', // Accessibility label for screen readers.
@@ -290,7 +290,8 @@ Widget _uploadItemButton(BuildContext context) {
             vertical: 14.0,
             horizontal: 24.0, // Adds padding inside the button.
           ),
-          backgroundColor: Colors.teal, // Sets the button's background color.
+          backgroundColor: Colors.deepPurple, // Sets the button's background color.
+          foregroundColor: Colors.white
         ),
         onPressed: isUploading
             ? null
@@ -367,7 +368,6 @@ Widget _uploadItemButton(BuildContext context) {
                 style: TextStyle(
                   color: Colors.white, // Text color.
                   fontSize: 16.0, // Font size.
-                  fontWeight: FontWeight.bold, // Bold text.
                 ),
               ),
       ),
@@ -376,4 +376,3 @@ Widget _uploadItemButton(BuildContext context) {
 }
 
 }
-

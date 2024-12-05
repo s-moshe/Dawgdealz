@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   List<Item> displayedItems = [];
   String search = '';
+  String selectedFilter = 'Time Posted'; // Default filter criterion
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,16 @@ class HomePageState extends State<HomePage> {
     if (displayedItems.isEmpty && items.isNotEmpty) {
       displayedItems = List.from(items);
     }
+
+    // Apply sorting based on selected filter
+    if (selectedFilter == 'Price') {
+      displayedItems.sort((a, b) {
+        double priceA = parsePrice(a.price);
+        double priceB = parsePrice(b.price);
+        return priceA.compareTo(priceB);
+      });
+    }
+    // 'Time Posted' doesn't modify the order, as it's based on the original order.
 
     return Scaffold(
       body: Column(
@@ -44,17 +55,40 @@ class HomePageState extends State<HomePage> {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButton<String>(
+              value: selectedFilter,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedFilter = newValue!;
+                  // Reset the displayed items when switching between filters
+                  if (selectedFilter == 'Time Posted') {
+                    displayedItems = List.from(items);
+                  }
+                });
+              },
+              items: <String>['Time Posted', 'Price']
+                  .map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
           Expanded(
             child: itemProvider.isLoading
-                ?const Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : Container(
                     color: Colors.white,
                     padding: const EdgeInsets.all(10.0),
                     child: RefreshIndicator(
-                      onRefresh: () async{
-                        await itemProvider.fetchItems(); // Call your fetch method
-                            setState(() {
-                            displayedItems = List.from(itemProvider.items); // Update the displayed items
+                      onRefresh: () async {
+                        await itemProvider.fetchItems();
+                        setState(() {
+                          displayedItems =
+                              List.from(itemProvider.items);
                         });
                       },
                       child: GridView.builder(
@@ -68,7 +102,7 @@ class HomePageState extends State<HomePage> {
                         ),
                         itemBuilder: (context, index) {
                           final item = displayedItems[index];
-                      
+
                           return InkWell(
                             onTap: () {
                               Navigator.push(
@@ -90,7 +124,8 @@ class HomePageState extends State<HomePage> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           mainAxisAlignment:
@@ -109,9 +144,10 @@ class HomePageState extends State<HomePage> {
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 10), // Add padding
+                                        const SizedBox(height: 10),
                                         Semantics(
                                           child: Text(
+                                            textAlign: TextAlign.center,
                                             'Price: \$${item.price}',
                                             style: const TextStyle(
                                                 color: Colors.black,
@@ -120,6 +156,7 @@ class HomePageState extends State<HomePage> {
                                         ),
                                         Semantics(
                                           child: Text(
+                                            textAlign: TextAlign.center,
                                             item.name,
                                             style: const TextStyle(
                                                 color: Colors.black,
@@ -152,5 +189,11 @@ class HomePageState extends State<HomePage> {
     setState(() {
       displayedItems = filtered;
     });
+  }
+
+  // Helper method to parse price strings and handle cases like "$20" and "$20.00"
+  double parsePrice(String priceString) {
+    // Remove any non-numeric characters (like "$" or ",") and convert to double
+    return double.tryParse(priceString.replaceAll(RegExp(r'[^0-9.]'), '')) ?? 0.0;
   }
 }

@@ -29,7 +29,8 @@ class SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Account Registration'),
+        backgroundColor: Colors.deepPurple,
+        title: const Text('Account Registration', style: TextStyle(color: Colors.white)),
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -77,7 +78,7 @@ class SignupPageState extends State<SignupPage> {
                   context: context,
                 );
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple, overlayColor: Colors.white),
               child: const Text(style:TextStyle(color: Colors.white), 'Sign Up')
             ),
             TextButton(

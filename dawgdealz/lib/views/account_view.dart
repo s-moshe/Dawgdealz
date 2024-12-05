@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:navigation/models/profile_provider.dart';
 import 'package:navigation/views/edit_profile.dart';
+import 'package:navigation/views/login.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 //import 'package:navigation/firebase/firestore_crud.dart'; //NOT USED
@@ -114,6 +115,7 @@ class AccountView extends StatelessWidget {
                   const SizedBox(height: 16),
                   
                   _buildEditButton(context, userProfileProvider),
+                  _buildLogOutButton(context)
                   
                 ],
               ),
@@ -181,6 +183,57 @@ Future<void> sendEmail(String email) async {
 //     ),
 //   );
 // }
+
+Widget _buildLogOutButton(BuildContext context) {
+  return Center(
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.orange,
+        foregroundColor: Colors.white,
+      ),
+      onPressed: () async {
+        // Show the confirmation dialog
+        final shouldLogout = await showDialog<bool>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirm Logout'),
+              content: const Text('Are you sure you want to log out?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false); // Return "false"
+                  },
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(true); // Return "true"
+                  },
+                  child: const Text('Log Out'),
+                ),
+              ],
+            );
+          },
+        );
+
+        // If the user confirmed, log them out
+        if (shouldLogout == true) {
+          await FirebaseAuth.instance.signOut();
+          if (context.mounted) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const LoginPage()),
+            );
+          }
+        }
+      },
+      child: const Text('Log Out', style: TextStyle(color: Colors.white)),
+    ),
+  );
+}
+
+
 
 
 Widget _buildEmailText(BuildContext context, String email, String userName) {
@@ -298,7 +351,11 @@ void _openEmail(BuildContext context, String email, String userName) async {
 
 
 Widget _buildEditButton(BuildContext context, UserProfileProvider userProfileProvider) {
-  return ElevatedButton(
+  return Center(child: ElevatedButton( 
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepPurple,
+                      foregroundColor: Colors.white
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -313,8 +370,8 @@ Widget _buildEditButton(BuildContext context, UserProfileProvider userProfilePro
                         ),
                       );
                     },
-                    child: const Text('Edit Profile'),
-                  );
+                    child: const Text('Edit Profile', style: TextStyle(color: Colors.white)),
+  ));
 }
 
 

@@ -12,7 +12,7 @@ class SellerProfileView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Seller Profile'),
-        backgroundColor: const Color.fromARGB(255, 114, 88, 159),
+        backgroundColor: Colors.deepPurple,
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future:

@@ -17,8 +17,6 @@ class AuthService {
         password: password,
       );
 
-      // Delay for better user experience (optional)
-      await Future.delayed(const Duration(seconds: 1));
 
       // Navigate to the home page after successful signup
       Navigator.pushReplacement(

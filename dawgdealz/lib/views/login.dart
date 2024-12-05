@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:navigation/auth_service.dart';
 import 'signup.dart';
 
+
+import 'dart:math' as Math;
+
 class LoginPage extends StatefulWidget {
 
   const LoginPage({super.key}); 
@@ -14,6 +17,7 @@ class LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
+  
 
   @override
   void dispose() {
@@ -71,7 +75,7 @@ class LoginPageState extends State<LoginPage> {
               onPressed: () async {
                 await AuthService().signin(context: context, email: getFormattedEmail(_emailController.text), password: _passwordController.text);
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple, overlayColor: Colors.white),
               child: const Text(style:TextStyle(color: Colors.white), 'Login')
             ),
             TextButton(
