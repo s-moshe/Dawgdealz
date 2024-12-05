@@ -4,7 +4,7 @@ import 'package:navigation/models/profile_provider.dart';
 import 'package:navigation/views/edit_profile.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:navigation/firebase/firestore_crud.dart';
+//import 'package:navigation/firebase/firestore_crud.dart'; //NOT USED
 import 'package:firebase_auth/firebase_auth.dart';
 //import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
@@ -23,7 +23,7 @@ class AccountView extends StatelessWidget {
   //final String pfpDesc;
 
 
-  AccountView({Key? key}) : super(key: key);
+  AccountView({super.key});
 
 
 
@@ -36,7 +36,7 @@ class AccountView extends StatelessWidget {
 
    Widget build(BuildContext context) {
     //final FirebaseFirestore firestore = FirebaseFirestore.instance;
-    FirestoreCrud firestore = FirestoreCrud();
+    //FirestoreCrud firestore = FirestoreCrud(); // NOT USED 
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
     return  Scaffold(
       appBar: AppBar(
@@ -155,32 +155,32 @@ Future<void> sendEmail(String email) async {
 
 
 
-Widget _buildTestUrlLauncher(BuildContext context) {
-  final Uri testUrl = Uri.parse('https://www.google.com');
+// Widget _buildTestUrlLauncher(BuildContext context) {
+//   final Uri testUrl = Uri.parse('https://www.google.com');
 
 
-  return GestureDetector(
-    onTap: () async {
-      if (await canLaunchUrl(testUrl)) {
-        await launchUrl(testUrl);
-      } else {
-        debugPrint('Could not launch $testUrl');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Could not open the test URL.'))
-        );
-      }
-    },
-    child: const Text(
-      'Open Test URL',
-      style:  TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.bold,
-        color: Colors.blue,
-        decoration: TextDecoration.underline,
-      ),
-    ),
-  );
-}
+//   return GestureDetector(
+//     onTap: () async {
+//       if (await canLaunchUrl(testUrl)) {
+//         await launchUrl(testUrl);
+//       } else {
+//         debugPrint('Could not launch $testUrl');
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Could not open the test URL.'))
+//         );
+//       }
+//     },
+//     child: const Text(
+//       'Open Test URL',
+//       style:  TextStyle(
+//         fontSize: 16,
+//         fontWeight: FontWeight.bold,
+//         color: Colors.blue,
+//         decoration: TextDecoration.underline,
+//       ),
+//     ),
+//   );
+// }
 
 
 Widget _buildEmailText(BuildContext context, String email, String userName) {
@@ -233,68 +233,68 @@ void _openEmail(BuildContext context, String email, String userName) async {
 
 
 //this should build with whatever the new data that is fetched from
-  Widget _buildName(BuildContext context, Map<String, dynamic> data) {
-    //initialize here instead of in constructor
-    final String name = data['name'] ?? 'Unknown';
-    final String major = data['major'] ?? 'Unknown';
-    final int gradDate = data['gradDate'] ?? 0;
-    final String bio = data['bio'] ?? 'No bio provided';
-    final String email = data['email'] ?? 'unknown@example.com';
-    return Column(
-      //mainAxisAlignment: ,
-      children: [
-        Text(
-          name,
-          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)
-        ),
-        Text(
-          'Major: $major',
-          style: const TextStyle(fontSize: 16)
-        ),
-        Text(
-          'Year: $gradDate',
-          style: const TextStyle(fontSize: 16)
-        ),
-        Text(
-          'About Me: $bio',
-          style: const TextStyle(fontSize: 16)
-        ),
-        Row(
-        children: [
-          const Text(
-            'Contact: ',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          GestureDetector(
-            //replace with flutter email sender if it doesn't work
-            onTap: () async {
-              final Uri emailUri = Uri(
-                scheme: 'mailto',
-                path: '$email@uw.edu',
-                query: 'subject=Dawg Dealz Request&body=Hi $name! I saw your profile listings, and I would like to discuss...',
-              );
-              if (await canLaunchUrl(emailUri)) {
-                await launchUrl(emailUri);
-              } else {
-                debugPrint('Could not launch email client');
-              }
-            },
-            child: Text(
-              '$email@uw.edu',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.blue,
-                decoration: TextDecoration.underline,
-              ),
-            ),
-            //add an email me button?
-          ),
-        ],
-      )
-      ]  
-    );
-  }
+  // Widget _buildName(BuildContext context, Map<String, dynamic> data) {
+  //   //initialize here instead of in constructor
+  //   final String name = data['name'] ?? 'Unknown';
+  //   final String major = data['major'] ?? 'Unknown';
+  //   final int gradDate = data['gradDate'] ?? 0;
+  //   final String bio = data['bio'] ?? 'No bio provided';
+  //   final String email = data['email'] ?? 'unknown@example.com';
+  //   return Column(
+  //     //mainAxisAlignment: ,
+  //     children: [
+  //       Text(
+  //         name,
+  //         style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold)
+  //       ),
+  //       Text(
+  //         'Major: $major',
+  //         style: const TextStyle(fontSize: 16)
+  //       ),
+  //       Text(
+  //         'Year: $gradDate',
+  //         style: const TextStyle(fontSize: 16)
+  //       ),
+  //       Text(
+  //         'About Me: $bio',
+  //         style: const TextStyle(fontSize: 16)
+  //       ),
+  //       Row(
+  //       children: [
+  //         const Text(
+  //           'Contact: ',
+  //           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+  //         ),
+  //         GestureDetector(
+  //           //replace with flutter email sender if it doesn't work
+  //           onTap: () async {
+  //             final Uri emailUri = Uri(
+  //               scheme: 'mailto',
+  //               path: '$email@uw.edu',
+  //               query: 'subject=Dawg Dealz Request&body=Hi $name! I saw your profile listings, and I would like to discuss...',
+  //             );
+  //             if (await canLaunchUrl(emailUri)) {
+  //               await launchUrl(emailUri);
+  //             } else {
+  //               debugPrint('Could not launch email client');
+  //             }
+  //           },
+  //           child: Text(
+  //             '$email@uw.edu',
+  //             style: const TextStyle(
+  //               fontSize: 16,
+  //               fontWeight: FontWeight.bold,
+  //               color: Colors.blue,
+  //               decoration: TextDecoration.underline,
+  //             ),
+  //           ),
+  //           //add an email me button?
+  //         ),
+  //       ],
+  //     )
+  //     ]  
+  //   );
+  // }
 
 
 Widget _buildEditButton(BuildContext context, UserProfileProvider userProfileProvider) {
@@ -319,26 +319,28 @@ Widget _buildEditButton(BuildContext context, UserProfileProvider userProfilePro
 
 
 //once they open the view they can edit it
-  _giveEditPage(BuildContext context, String name, String bio, String major, String email, int gradDate) async {
-    final updated = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditProfileWidget(
-          name: name,
-          bio: bio,
-          major: major,
-          email: email,
-          gradDate: gradDate,
-        ),
-      ),
-    );
-    if (updated == true) {
-      // Force rebuild of the FutureBuilder to fetch updated data
-      FirestoreCrud firestore = FirestoreCrud();
-      firestore.getUserProfile(uuid); // Call the helper function again to refresh
-      (context as Element).markNeedsBuild();
-    }
-  }
+
+// NOT USED 
+  // _giveEditPage(BuildContext context, String name, String bio, String major, String email, int gradDate) async {
+  //   final updated = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => EditProfileWidget(
+  //         name: name,
+  //         bio: bio,
+  //         major: major,
+  //         email: email,
+  //         gradDate: gradDate,
+  //       ),
+  //     ),
+  //   );
+  //   if (updated == true) {
+  //     // Force rebuild of the FutureBuilder to fetch updated data
+  //     FirestoreCrud firestore = FirestoreCrud();
+  //     firestore.getUserProfile(uuid); // Call the helper function again to refresh
+  //     (context as Element).markNeedsBuild();
+  //   }
+  // }
 
 
 }

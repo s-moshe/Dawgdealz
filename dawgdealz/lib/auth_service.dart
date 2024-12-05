@@ -23,7 +23,9 @@ class AuthService {
       // Navigate to the home page after successful signup
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const NavDemo(title: 'DawgDealz')),
+        MaterialPageRoute(
+          builder: (context) => const NavDemo(title: 'DawgDealz'),
+        ),
       );
     } on FirebaseAuthException catch (e) {
       // Handle FirebaseAuth errors
