@@ -3,6 +3,8 @@ import 'package:navigation/auth_service.dart';
 import 'login.dart';
 
 class SignupPage extends StatefulWidget {
+  const SignupPage({super.key}); 
+  
   @override
   SignupPageState createState() => SignupPageState();
 }
@@ -69,7 +71,7 @@ class SignupPageState extends State<SignupPage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => const LoginPage()),
                 );
               },
               child: const Text('Need to login? Sign In'),

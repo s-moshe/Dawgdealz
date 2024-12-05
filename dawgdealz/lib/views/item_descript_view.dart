@@ -16,7 +16,8 @@ class ItemDescription extends StatefulWidget {
 class _ItemDescriptionState extends State<ItemDescription> {
   String sellerName = 'Unknown';
   String sellerEmail = 'unknown';
-
+  
+  @override
   void initState() {
     super.initState();
     fetchSellerInfo();
@@ -84,7 +85,7 @@ class _ItemDescriptionState extends State<ItemDescription> {
               const SizedBox(height: 10),
               Text(
                 'Seller Name: $sellerName',
-                style: TextStyle(fontSize: 16),
+                style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
               Center(

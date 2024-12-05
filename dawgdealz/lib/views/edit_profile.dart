@@ -13,16 +13,15 @@ class EditProfileWidget extends StatefulWidget {
   final List<String> campusSpots = ['Red Square', 'Quad', 'Drumheller Fountain', 'North Campus Dorms', 'West Campus Dorms', 'Other/Off Campus'];
   //late List<bool> selectedSpots;
 
-  //adjfkhakljdfhaskjsdfh
-
+  //key added to line 18 and 
   EditProfileWidget({
+    super.key,
     required this.name,
     required this.bio,
     required this.major,
     required this.email,
     required this.gradDate,
   });
-
   @override
   State<EditProfileWidget> createState() => _EditProfileWidgetState();
 }
@@ -216,9 +215,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
+          const Text(
             emailDomain,
-            style: const TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16),
           ),
         ],
       ),

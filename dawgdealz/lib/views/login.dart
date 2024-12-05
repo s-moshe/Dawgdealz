@@ -3,6 +3,8 @@ import 'package:navigation/auth_service.dart';
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
+
+  const LoginPage({super.key}); 
   @override
   LoginPageState createState() => LoginPageState();
 }
@@ -68,7 +70,7 @@ class LoginPageState extends State<LoginPage> {
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignupPage()),
+                  MaterialPageRoute(builder: (context) => const SignupPage()),
                 );
               },
               child: const Text('Need to create an account? Sign Up'),
