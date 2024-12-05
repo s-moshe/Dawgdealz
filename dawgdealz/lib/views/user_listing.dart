@@ -31,7 +31,7 @@ class UserItemList extends State<UserListing> {
         child: ListTile(
           contentPadding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           title: Text(
-            '${items[index].name}',
+            items[index].name,
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -45,11 +45,35 @@ class UserItemList extends State<UserListing> {
             ),
           ),
           trailing: IconButton(
-            icon: const Icon(Icons.delete, color: Colors.redAccent),
-            onPressed: () {
-              itemProvider.deleteItem(items[index].id);
-            },
-          ),
+  icon: const Icon(Icons.delete, color: Colors.redAccent),
+  onPressed: () {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog( // to confirm deletion
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this item?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                itemProvider.deleteItem(items[index].id); // Perform delete
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
+  },
+),
+
         ),
       ),
     );

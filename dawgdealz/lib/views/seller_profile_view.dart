@@ -34,9 +34,9 @@ class SellerProfileView extends StatelessWidget {
                 children: [
                   _buildName(context, data), 
                   const SizedBox(height: 16),
-                  Text(
+                  const Text(
                     'Consider reaching out to the seller directly to learn more about their location or their availability, inquire about their services, or to leave a review. Some sellers may be open to selling items in bundles!',
-                    style: const TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18),
                   ),
                   const SizedBox(height: 16),
                    const SizedBox(height: 16),
