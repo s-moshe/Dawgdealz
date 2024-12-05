@@ -3,6 +3,7 @@ import 'package:navigation/models/item.dart';
 import 'package:provider/provider.dart';
 import 'package:navigation/models/item_provider.dart';
 import 'package:navigation/views/item_descript_view.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -133,12 +134,15 @@ class HomePageState extends State<HomePage> {
                                           children: [
                                             ClipOval(
                                               child: (item.images.isNotEmpty)
-                                                  ? Image.network(
-                                                      item.images[0],
+                                                  ? CachedNetworkImage(
+                                                      imageUrl: item.images[0],
                                                       height: 100,
                                                       width: 100,
                                                       fit: BoxFit.cover,
+                                                      placeholder: (context, url) => const CircularProgressIndicator(),
+                                                      errorWidget: (context, url, error) => const Icon(Icons.error),
                                                     )
+
                                                   : const Icon(Icons
                                                       .image_not_supported),
                                             ),
