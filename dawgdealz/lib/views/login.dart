@@ -5,21 +5,32 @@ import 'signup.dart';
 class LoginPage extends StatefulWidget {
 
   const LoginPage({super.key}); 
+
   @override
   LoginPageState createState() => LoginPageState();
 }
 
-final TextEditingController _emailController = TextEditingController();
-final TextEditingController _passwordController = TextEditingController();
-
 class LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _obscureText = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  String getFormattedEmail(String input) {
+    return input.endsWith('@uw.edu') ? input : '$input@uw.edu';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('User Login'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -32,39 +43,36 @@ class LoginPageState extends State<LoginPage> {
                 labelText: 'Email Address',
                 suffixText: '@uw.edu',
               ),
+              autocorrect: false,
+              enableSuggestions: false,
+              keyboardType: TextInputType.emailAddress,
             ),
+            const SizedBox(height: 8),
+            const SizedBox(height: 8),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
-                suffixIcon: GestureDetector(
-                  onTapDown: (_) {
-                    setState(() {
-                      _obscureText = false;
-                    });
-                  },
-                  onTapUp: (_) {
-                    setState(() {
-                      _obscureText = true;
-                    });
-                  },
-                  child: Icon(
+                suffixIcon: IconButton(
+                  icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                   ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
                 ),
               ),
               obscureText: _obscureText,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
-                AuthService().signin(
-                  context: context,
-                  email: '${_emailController.text}@uw.edu',
-                  password: _passwordController.text,
-                );
+              onPressed: () async {
+                await AuthService().signin(context: context, email: _emailController.text, password: _passwordController.text);
               },
-              child: const Text('Sign In'),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
+              child: const Text(style:TextStyle(color: Colors.white), 'Login')
             ),
             TextButton(
               onPressed: () {
@@ -73,7 +81,7 @@ class LoginPageState extends State<LoginPage> {
                   MaterialPageRoute(builder: (context) => const SignupPage()),
                 );
               },
-              child: const Text('Need to create an account? Sign Up'),
+              child: const Text('Need to create an account? Register'),
             ),
           ],
         ),
@@ -81,3 +89,6 @@ class LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+
+

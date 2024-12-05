@@ -104,7 +104,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
                     decoration: const InputDecoration(
                       labelText: 'Price',
                       prefixText: '\$', // This adds the dollar sign in front of the input field
-                      hintText: '0.0',
+                      hintText: '0.00',
                       border: OutlineInputBorder(),
                     ),
                   )),
@@ -269,7 +269,9 @@ class _EntryItemViewState extends State<ItemEntryView> {
                   ],
                 ),
               const SizedBox(height: 40),
-             _uploadItemButton(context),
+              Center(
+                child: _uploadItemButton(context),
+              ),
             ],
           ),
         ),
