@@ -121,7 +121,8 @@ class _EntryItemViewState extends State<ItemEntryView> {
                     'Clothes',
                     'Books',
                     'Office Supplies',
-                    'Dorm Furnitures'
+                    'Dorm Furnitures',
+                    'Tickets & School Events'
                   ] // Dropdown menu options.
                       .map((category) => DropdownMenuItem(
                             value:
@@ -277,82 +278,100 @@ class _EntryItemViewState extends State<ItemEntryView> {
   }
 
   
-// Upload button.
-  Widget _uploadItemButton(BuildContext context){
-    return  Center(
-                child: Semantics(
-                  label:
-                      'Upload item button', // Accessibility label for screen readers.
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 14.0,
-                          horizontal: 24.0), // Adds padding inside the button.
-                      backgroundColor:
-                          Colors.teal, // Sets the button's background color.
-                    ),
-                    onPressed: isUploading ? null : () async{
-                       setState(() {
-                          isUploading = true; // Set uploading state to true to disable the button.
-                       });
-                       if(_nameController.text!='' && _priceController.text!='' && double.tryParse(_priceController.text) != null){
-                        List<String> uploadedImageUrls = [];
-                        bool success = true;
+Widget _uploadItemButton(BuildContext context) {
+  return Center(
+    child: Semantics(
+      label: 'Upload item button', // Accessibility label for screen readers.
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(
+            vertical: 14.0,
+            horizontal: 24.0, // Adds padding inside the button.
+          ),
+          backgroundColor: Colors.teal, // Sets the button's background color.
+        ),
+        onPressed: isUploading
+            ? null
+            : () async {
+                setState(() {
+                  isUploading = true; // Disable the button during upload.
+                });
 
-                        // Upload each photo and get its URL
-                        for (var image in _uploadedPhotos) {
-                          final imageUrl = await uploadItemImageForUser(image);
-                          if (imageUrl != null) {
-                            uploadedImageUrls.add(imageUrl);
-                          } else {
-                            success = false;
-                            break;
-                          }
-                        }
+                if (_nameController.text.isEmpty || 
+                    _priceController.text.isEmpty || 
+                    double.tryParse(_priceController.text) == null) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Missing name or price (or invalid price)")),
+                    );
+                  }
+                  setState(() {
+                    isUploading = false; // Re-enable the button.
+                  });
+                  return;
+                }
 
-                        if (success) {
-                          // Save metadata
-                          await saveItemData(
-                            _nameController.text,
-                            _descriptionController.text,
-                            _priceController.text,
-                            _selectedCategory,
-                            _itemCondition,
-                            uploadedImageUrls,
-                          );
+                List<String> uploadedImageUrls = [];
+                bool success = true;
 
-                          // Show success message and navigate to the home page
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Item added successfully!")));
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(builder: (context) => const NavDemo(title: 'DawgDealz')),
-                            (route) => false,
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Failed to upload item!")));
-                        }
-                       }else{
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Missing name or price (or invalid price)")));
-                       }
-                       setState(() {
-                          isUploading = false; // Reset uploading state after the process is complete.
-                      });
-                    },
-                    child: isUploading
-                       ? const CircularProgressIndicator() // Show a progress indicator while uploading.
-                       : const Text(
-                      'Add Item', // Text displayed inside the button.
-                      style: TextStyle(
-                        color: Colors.white, // Text color.
-                        fontSize: 16.0, // Font size.
-                        fontWeight: FontWeight.bold, // Bold text.
+                for (var image in _uploadedPhotos) {
+                  final imageUrl = await uploadItemImageForUser(image);
+                  if (imageUrl != null) {
+                    uploadedImageUrls.add(imageUrl);
+                  } else {
+                    success = false;
+                    break;
+                  }
+                }
+
+                if (success) {
+                  await saveItemData(
+                    _nameController.text,
+                    _descriptionController.text,
+                    _priceController.text,
+                    _selectedCategory,
+                    _itemCondition,
+                    uploadedImageUrls,
+                  );
+
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Item added successfully!")),
+                    );
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const NavDemo(title: 'DawgDealz'),
                       ),
-                    ),
-                  ),
+                      (route) => false,
+                    );
+                  }
+                } else if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Failed to upload item!")),
+                  );
+                }
+
+                if (context.mounted) {
+                  setState(() {
+                    isUploading = false; // Re-enable the button.
+                  });
+                }
+              },
+        child: isUploading
+            ? const CircularProgressIndicator() // Show a loading spinner during upload.
+            : const Text(
+                'Add Item', // Button label.
+                style: TextStyle(
+                  color: Colors.white, // Text color.
+                  fontSize: 16.0, // Font size.
+                  fontWeight: FontWeight.bold, // Bold text.
                 ),
-              );
-  }
-  
-  
+              ),
+      ),
+    ),
+  );
+}
+
 }
 
