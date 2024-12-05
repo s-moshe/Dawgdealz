@@ -73,7 +73,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
         Provider.of<UserProfileProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        backgroundColor: const Color.fromARGB(255, 114, 88, 159),
+        title: const Text('Edit Profile',style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -87,6 +88,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                 isNumber: true),
             _buildMeetupSpots(),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 114, 88, 159),
+                      foregroundColor: Colors.white
+                    ),
               onPressed: () async {
                 final currentContext = context; // Capture context locally
 
@@ -119,7 +124,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   Navigator.pop(currentContext);
                 }
               },
-              child: const Text('Save'),
+              child: const Text('Save', style: TextStyle(color: Colors.white)),
             ),
           ],
         ),

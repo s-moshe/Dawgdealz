@@ -197,10 +197,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
 
               Center(
                 child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurple,
-                    overlayColor: Colors.white
-                  ),
+                  style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple, overlayColor: Colors.white),
                   onPressed: () {
                     showDialog(
                       context: context,
@@ -290,7 +287,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
             vertical: 14.0,
             horizontal: 24.0, // Adds padding inside the button.
           ),
-          backgroundColor: Colors.deepPurple, // Sets the button's background color.
+          backgroundColor: const Color.fromARGB(255, 114, 88, 159), // Sets the button's background color.
           foregroundColor: Colors.white
         ),
         onPressed: isUploading

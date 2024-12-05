@@ -92,6 +92,7 @@ class _ItemDescriptionState extends State<ItemDescription> {
               Center(
                 child:
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 114, 88, 159), overlayColor: Colors.white),
                 onPressed: () {
                   Navigator.push(
                   context,
@@ -99,15 +100,17 @@ class _ItemDescriptionState extends State<ItemDescription> {
                     builder: (context) => SellerProfileView(sellerId: widget.item.userId),
                   ),);
                 },
-                child: const Text('View Seller Profile'),
+                child: const Text('View Seller Profile', style: TextStyle(color: Colors.white)),
               )),
               Center(
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 114, 88, 159), overlayColor: Colors.white),
                   onPressed: () {
                     
                     sendEmail(sellerEmail);
                   },
-                  child: const Text('Email Seller'),
+                  child: const Text('Email Seller', style: TextStyle(color: Colors.white)),
+
                 ),
               ),
             ],

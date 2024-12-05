@@ -353,7 +353,7 @@ void _openEmail(BuildContext context, String email, String userName) async {
 Widget _buildEditButton(BuildContext context, UserProfileProvider userProfileProvider) {
   return Center(child: ElevatedButton( 
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: Color.fromARGB(255, 114, 88, 159),
                       foregroundColor: Colors.white
                     ),
                     onPressed: () {
