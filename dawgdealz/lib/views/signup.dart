@@ -31,7 +31,7 @@ class SignupPageState extends State<SignupPage> {
                 suffixText: '@uw.edu',
               ),
             ),
-            Text('Your password must be at least 6 characters long!'),
+            const Text('Your password must be at least 6 characters long!'),
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(

@@ -109,7 +109,7 @@ class AccountView extends StatelessWidget {
                     userProfileProvider.userProfile!['name'],
                   ),
                   const SizedBox(height: 16),
-                  Text('Preferred Campus Meetup Spots:'),
+                  const Text('Preferred Campus Meetup Spots:'),
                   ..._buildMeetupSpots(userProfileProvider.userProfile!),
                   const SizedBox(height: 16),
                   
@@ -166,13 +166,13 @@ Widget _buildTestUrlLauncher(BuildContext context) {
       } else {
         print('Could not launch $testUrl');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Could not open the test URL.'))
+          const SnackBar(content: Text('Could not open the test URL.'))
         );
       }
     },
-    child: Text(
+    child: const Text(
       'Open Test URL',
-      style: const TextStyle(
+      style:  TextStyle(
         fontSize: 16,
         fontWeight: FontWeight.bold,
         color: Colors.blue,
