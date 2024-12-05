@@ -23,7 +23,7 @@ class LoginPageState extends State<LoginPage> {
   }
 
   String getFormattedEmail(String input) {
-    return input.endsWith('@uw.edu') ? input : '$input@uw.edu';
+    return '$input@uw.edu';
   }
 
   @override
@@ -37,6 +37,8 @@ class LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset('assets/huskies.png', height: 100),
+            const SizedBox(height: 20),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -69,17 +71,19 @@ class LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
-                await AuthService().signin(context: context, email: _emailController.text, password: _passwordController.text);
+                await AuthService().signin(context: context, email: getFormattedEmail(_emailController.text), password: _passwordController.text);
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
               child: const Text(style:TextStyle(color: Colors.white), 'Login')
             ),
             TextButton(
               onPressed: () {
+                Future.delayed(const Duration(milliseconds: 500), () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const SignupPage()),
                 );
+              });
               },
               child: const Text('Need to create an account? Register'),
             ),

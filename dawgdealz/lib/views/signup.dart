@@ -22,7 +22,7 @@ class SignupPageState extends State<SignupPage> {
   }
 
   String getFormattedEmail(String input) {
-    return input.endsWith('@uw.edu') ? input : '$input@uw.edu';
+    return '$input@uw.edu';
   }
 
   @override
@@ -36,6 +36,8 @@ class SignupPageState extends State<SignupPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Image.asset('assets/huskies.png', height: 100),
+            const SizedBox(height: 20),
             TextField(
               controller: _emailController,
               decoration: const InputDecoration(
@@ -75,14 +77,16 @@ class SignupPageState extends State<SignupPage> {
                 );
               },
               style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
-              child: const Text(style:TextStyle(color: Colors.white), 'Signup')
+              child: const Text(style:TextStyle(color: Colors.white), 'Sign Up')
             ),
             TextButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
-                );
+                Future.delayed(const Duration(milliseconds: 500), () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginPage()),
+              );
+            });
               },
               child: const Text('Need to login? Sign In'),
             ),
