@@ -10,10 +10,17 @@ class EditProfileWidget extends StatefulWidget {
   final String major;
   final String email;
   final int gradDate;
-  final List<String> campusSpots = ['Red Square', 'Quad', 'Drumheller Fountain', 'North Campus Dorms', 'West Campus Dorms', 'Other/Off Campus'];
+  final List<String> campusSpots = [
+    'Red Square',
+    'Quad',
+    'Drumheller Fountain',
+    'North Campus Dorms',
+    'West Campus Dorms',
+    'Other/Off Campus'
+  ];
   //late List<bool> selectedSpots;
 
-  //key added to line 18 and 
+  //key added to line 18 and
   EditProfileWidget({
     super.key,
     required this.name,
@@ -33,7 +40,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   late TextEditingController emailController;
   late TextEditingController gradDateController;
   late List<bool> selectedSpots;
-  
 
   final FirestoreCrud firestore = FirestoreCrud();
 
@@ -44,7 +50,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     bioController = TextEditingController(text: widget.bio);
     majorController = TextEditingController(text: widget.major);
     emailController = TextEditingController(text: widget.email);
-    gradDateController = TextEditingController(text: widget.gradDate.toString());
+    gradDateController =
+        TextEditingController(text: widget.gradDate.toString());
     selectedSpots = List<bool>.filled(widget.campusSpots.length, false);
 
     _initializeSelectedSpots(); // Fetch data and update selectedSpots
@@ -62,7 +69,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    final userProfileProvider =
+        Provider.of<UserProfileProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Profile'),
@@ -75,13 +83,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             _buildTextField('Bio', bioController),
             _buildTextField('Major', majorController),
             _buildEmailField('Email', emailController),
-            _buildTextField('Graduation Year', gradDateController, isNumber: true),
+            _buildTextField('Graduation Year', gradDateController,
+                isNumber: true),
             _buildMeetupSpots(),
-            
-          
             ElevatedButton(
-              
-               onPressed: () async {
+              onPressed: () async {
+                final currentContext = context; // Capture context locally
+
                 final List<String> selectedMeetupSpots = [];
                 for (int i = 0; i < widget.campusSpots.length; i++) {
                   if (selectedSpots[i]) {
@@ -94,22 +102,24 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   'bio': bioController.text.trim(),
                   'major': majorController.text.trim(),
                   'email': emailController.text.trim(),
-                  'gradDate': int.tryParse(gradDateController.text.trim()) ?? 2025,
-                  'preferredMeetupSpots': selectedMeetupSpots, // Add the selected spots here
-                  };
+                  'gradDate':
+                      int.tryParse(gradDateController.text.trim()) ?? 2025,
+                  'preferredMeetupSpots': selectedMeetupSpots,
+                };
 
-                  await userProfileProvider.updateUserProfile(
-                    FirebaseAuth.instance.currentUser!.uid,
-                    updatedData,
-                  );
+                await userProfileProvider.updateUserProfile(
+                  FirebaseAuth.instance.currentUser!.uid,
+                  updatedData,
+                );
 
-                  // Print to debug the updatedData map
-                  debugPrint('Updated data: $updatedData');
-                
-                Navigator.pop(context);
+                debugPrint('Updated data: $updatedData');
+
+                if (currentContext.mounted) {
+                  // Use the captured context and check if it is mounted
+                  Navigator.pop(currentContext);
+                }
               },
               child: const Text('Save'),
-      
             ),
           ],
         ),
@@ -118,32 +128,33 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 
   Future<void> _initializeSelectedSpots() async {
-  final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-  if (userId.isEmpty) {
-    debugPrint('Error: User not logged in.');
-    return;
+    if (userId.isEmpty) {
+      debugPrint('Error: User not logged in.');
+      return;
+    }
+
+    try {
+      // Fetch preferred meetup spots from Firestore
+
+      final List<dynamic> spotsDynamic = await firestore.getMeetupSpots(userId);
+      debugPrint('Fetched meetup spots: $spotsDynamic');
+      final List<String> meetupSpots =
+          spotsDynamic.cast<String>(); // Cast dynamic to List<String>
+
+      setState(() {
+        for (int i = 0; i < widget.campusSpots.length; i++) {
+          selectedSpots[i] = meetupSpots.contains(widget.campusSpots[i]);
+        }
+      });
+    } catch (e) {
+      debugPrint('Error initializing preferred meetup spots: $e');
+    }
   }
 
-  try {
-    // Fetch preferred meetup spots from Firestore
-    
-    final List<dynamic> spotsDynamic = await firestore.getMeetupSpots(userId);
-    debugPrint('Fetched meetup spots: $spotsDynamic');
-    final List<String> meetupSpots = spotsDynamic.cast<String>(); // Cast dynamic to List<String>
-
-    setState(() {
-      for (int i = 0; i < widget.campusSpots.length; i++) {
-        selectedSpots[i] = meetupSpots.contains(widget.campusSpots[i]);
-      }
-    });
-  } catch (e) {
-    debugPrint('Error initializing preferred meetup spots: $e');
-  }
-}
-
-
-  Widget _buildTextField(String label, TextEditingController controller, {bool isNumber = false}) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {bool isNumber = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -166,64 +177,63 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 
   Widget _buildMeetupSpots() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Preferred Campus Meetup Spots:',
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 8),
-      ...List.generate(widget.campusSpots.length, (index) {
-        return CheckboxListTile(
-          title: Text(widget.campusSpots[index]),
-          value: selectedSpots[index],
-          onChanged: (bool? value) {
-            setState(() {
-              selectedSpots[index] = value ?? false;
-              debugPrint('Selected Spots: $selectedSpots'); // Debug output
-            });
-          },
-        );
-      }),
-      const SizedBox(height: 16),
-    ],
-  );
-}
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Preferred Campus Meetup Spots:',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        ...List.generate(widget.campusSpots.length, (index) {
+          return CheckboxListTile(
+            title: Text(widget.campusSpots[index]),
+            value: selectedSpots[index],
+            onChanged: (bool? value) {
+              setState(() {
+                selectedSpots[index] = value ?? false;
+                debugPrint('Selected Spots: $selectedSpots'); // Debug output
+              });
+            },
+          );
+        }),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
 
   Widget _buildEmailField(String label, TextEditingController controller) {
-  const String emailDomain = '@uw.edu'; // Hardcoded domain
+    const String emailDomain = '@uw.edu'; // Hardcoded domain
 
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        label,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
-      const SizedBox(height: 8),
-      Row(
-        children: [
-          Expanded(
-            child: TextField(
-              //enabled:false,
-              controller: controller,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                hintText: 'Enter $label', 
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                //enabled:false,
+                controller: controller,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Enter $label',
+                ),
               ),
             ),
-          ),
-          const SizedBox(width: 8),
-          const Text(
-            emailDomain,
-            style: TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
-      const SizedBox(height: 16),
-    ],
-  );
+            const SizedBox(width: 8),
+            const Text(
+              emailDomain,
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
 }
-}
-
