@@ -31,7 +31,7 @@ class UserProfileProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e) {
-      print('Error fetching user profile: $e');
+      debugPrint('Error fetching user profile: $e');
     }
   }
 
@@ -43,7 +43,7 @@ class UserProfileProvider extends ChangeNotifier {
       _userProfile = updatedData; // Update the local state
       notifyListeners();
     } catch (e) {
-      print('Error updating user profile: $e');
+      debugPrint('Error updating user profile: $e');
     }
   }
 }

@@ -27,7 +27,7 @@ class ItemProvider extends ChangeNotifier {
           .map((doc) => Item.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
     } catch (error) {
-      print('Error fetching items: $error');
+      debugPrint('Error fetching items: $error');
       _items = []; // Fallback to an empty list on error
     } finally {
       _isLoading = false;
@@ -46,9 +46,9 @@ Future<void> deleteItem(String itemId) async {
     // Delete the document
     await docRef.delete();
     _items.removeWhere((item)=>item.id==itemId);
-    print("Item deleted successfully");
+    debugPrint("Item deleted successfully");
   } catch (e) {
-    print("Error deleting item: $e");
+    debugPrint("Error deleting item: $e");
   }finally {
       _isLoading = false;
       notifyListeners();

@@ -47,7 +47,7 @@ class AuthService {
         fontSize: 16.0
       );
     } catch (e) {
-      print(e);
+      debugPrint(e as String?);
     }
   }
 
@@ -91,7 +91,7 @@ class AuthService {
         fontSize: 16.0
       );
     } catch (e) {
-      print(e);
+      debugPrint(e as String?);
     }
   }
 }

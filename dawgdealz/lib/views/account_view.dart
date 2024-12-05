@@ -146,9 +146,9 @@ Future<void> sendEmail(String email) async {
 
     try {
       await FlutterEmailSender.send(emailDetails);
-      print('Email sent successfully!');
+      debugPrint('Email sent successfully!');
     } catch (error) {
-      print('Failed to send email: $error');
+      debugPrint('Failed to send email: $error');
     }
   }
 
@@ -164,7 +164,7 @@ Widget _buildTestUrlLauncher(BuildContext context) {
       if (await canLaunchUrl(testUrl)) {
         await launchUrl(testUrl);
       } else {
-        print('Could not launch $testUrl');
+        debugPrint('Could not launch $testUrl');
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Could not open the test URL.'))
         );
@@ -217,7 +217,7 @@ void _openEmail(BuildContext context, String email, String userName) async {
     );
 
 
-    print('Email URI: $emailUri');
+    debugPrint('Email URI: $emailUri');
    
     if (await canLaunchUrl(emailUri)) {
       await launchUrl(emailUri);
@@ -276,7 +276,7 @@ void _openEmail(BuildContext context, String email, String userName) async {
               if (await canLaunchUrl(emailUri)) {
                 await launchUrl(emailUri);
               } else {
-                print('Could not launch email client');
+                debugPrint('Could not launch email client');
               }
             },
             child: Text(

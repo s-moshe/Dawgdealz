@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:navigation/models/item.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
+//import 'package:flutter_email_sender/flutter_email_sender.dart'; //not used
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:navigation/views/seller_profile_view.dart';
 
@@ -16,7 +16,7 @@ class ItemDescription extends StatefulWidget {
 class _ItemDescriptionState extends State<ItemDescription> {
   String sellerName = 'Unknown';
   String sellerEmail = 'unknown';
-  
+
   @override
   void initState() {
     super.initState();
@@ -129,30 +129,33 @@ class _ItemDescriptionState extends State<ItemDescription> {
           sellerEmail = data['email'] ?? 'unknown';
         });
       } else {
-        print('Seller not found.');
+        debugPrint('Seller not found.');
       }
     } catch (e) {
-      print('Error fetching seller info: $e');
+      debugPrint('Error fetching seller info: $e');
     }
   }
-
+  
+  
   Future<void> sendEmail(String email) async {
-    final Email emailDetails = Email(
-      body: 'Hi there,\n\n I am interested in buying this item and wanted to reach out! \n\n Is it still available? Let us talk about a meeting time and place. \n\n (Consider personalizing your message, you are more likely to get a response!)...',
-      subject: '${widget.item.name} - Dawg Dealz Request',
-      recipients: ['$email@uw.edu'],
-      cc: [],
-      bcc: [],
-      isHTML: false, // Set to true if the email body contains HTML
-    );
+    // THIS IS NOT USED , COMMENTING - AYNUR
+
+    // final Email emailDetails = Email(
+    //   body: 'Hi there,\n\n I am interested in buying this item and wanted to reach out! \n\n Is it still available? Let us talk about a meeting time and place. \n\n (Consider personalizing your message, you are more likely to get a response!)...',
+    //   subject: '${widget.item.name} - Dawg Dealz Request',
+    //   recipients: ['$email@uw.edu'],
+    //   cc: [],
+    //   bcc: [],
+    //   isHTML: false, // Set to true if the email body contains HTML
+    // );
 
 
-    try {
-      await FlutterEmailSender.send(emailDetails);
-      print('Email sent successfully!');
-    } catch (error) {
-      print('Failed to send email: $error');
-    }
+    // try {
+    //   await FlutterEmailSender.send(emailDetails);
+    //   print('Email sent successfully!');
+    // } catch (error) {
+    //   print('Failed to send email: $error');
+    // }
   }
 
 }

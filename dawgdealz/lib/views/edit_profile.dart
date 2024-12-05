@@ -104,7 +104,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                   );
 
                   // Print to debug the updatedData map
-                  print('Updated data: $updatedData');
+                  debugPrint('Updated data: $updatedData');
                 
                 Navigator.pop(context);
               },
@@ -121,7 +121,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   final String userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   if (userId.isEmpty) {
-    print('Error: User not logged in.');
+    debugPrint('Error: User not logged in.');
     return;
   }
 
@@ -129,7 +129,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     // Fetch preferred meetup spots from Firestore
     
     final List<dynamic> spotsDynamic = await firestore.getMeetupSpots(userId);
-    print('Fetched meetup spots: $spotsDynamic');
+    debugPrint('Fetched meetup spots: $spotsDynamic');
     final List<String> meetupSpots = spotsDynamic.cast<String>(); // Cast dynamic to List<String>
 
     setState(() {
@@ -138,7 +138,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
       }
     });
   } catch (e) {
-    print('Error initializing preferred meetup spots: $e');
+    debugPrint('Error initializing preferred meetup spots: $e');
   }
 }
 
@@ -181,7 +181,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
           onChanged: (bool? value) {
             setState(() {
               selectedSpots[index] = value ?? false;
-              print('Selected Spots: $selectedSpots'); // Debug output
+              debugPrint('Selected Spots: $selectedSpots'); // Debug output
             });
           },
         );

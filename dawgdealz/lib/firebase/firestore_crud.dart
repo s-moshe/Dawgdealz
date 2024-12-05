@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 
 class FirestoreCrud {
@@ -19,9 +20,9 @@ class FirestoreCrud {
         'gradDate': 2025,
         'preferredMeetupSpots': ['Red Square', 'Quad', 'Other'],
       });
-      print('User added successfully!');
+      debugPrint('User added successfully!');
     } catch (e) {
-      print('Error adding user: $e');
+      debugPrint('Error adding user: $e');
     }
   }
 
@@ -30,9 +31,9 @@ class FirestoreCrud {
   Future<void> updateUserProfile(String userId, Map<String, dynamic> updatedData) async {
     try {
       await _firestore.collection('users').doc(userId).update(updatedData);
-      print('User profile updated successfully!');
+      debugPrint('User profile updated successfully!');
     } catch (e) {
-      print('Error updating user profile: $e');
+      debugPrint('Error updating user profile: $e');
     }
   }
 
@@ -41,10 +42,10 @@ class FirestoreCrud {
   Future<DocumentSnapshot> getUserProfile(String userId) async {
     try {
       DocumentSnapshot snapshot = await _firestore.collection('users').doc(userId).get();
-      print('User profile fetched successfully!');
+      debugPrint('User profile fetched successfully!');
       return snapshot;
     } catch (e) {
-      print('Error fetching user profile: $e');
+      debugPrint('Error fetching user profile: $e');
       rethrow;
     }
   }
@@ -58,7 +59,7 @@ class FirestoreCrud {
     final List<dynamic>? meetupSpots = data?['preferredMeetupSpots'] as List<dynamic>?;
     return meetupSpots?.map((e) => e.toString()).toList() ?? [];
   } catch (e) {
-    print('Error fetching meetup spots: $e');
+    debugPrint('Error fetching meetup spots: $e');
     return [];
   }
 }
