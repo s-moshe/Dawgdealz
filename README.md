@@ -51,6 +51,8 @@ The following dependencies are used in the DawgDealz project :
 - **firebase_storage**: For managing item images.
 - **provider**: For state management.
 - **image_picker**: For uploading photos from the gallery or camera.
+- **url_launcher**: For sending emails.
+- **google_generative_ai**: For writing AI generated item descriptions.
 
 ## Usage
 
