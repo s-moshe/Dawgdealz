@@ -14,7 +14,7 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 
 class AccountView extends StatelessWidget {
-  final String uuid = FirebaseAuth.instance.currentUser?.uid ?? ''; //unique user ID, ex user 1, user 2
+  final String uuid = FirebaseAuth.instance.currentUser?.uid ?? ''; 
   //final String name;
   //final String bio;
   //final String major;
@@ -39,6 +39,8 @@ class AccountView extends StatelessWidget {
     //final FirebaseFirestore firestore = FirebaseFirestore.instance;
     //FirestoreCrud firestore = FirestoreCrud(); // NOT USED 
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
+    print('Current User UID: $uuid'); 
+
     return  Scaffold(
       appBar: AppBar(
         title: const Text('Account Info'),
