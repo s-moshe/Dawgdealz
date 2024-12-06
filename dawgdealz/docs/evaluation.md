@@ -10,9 +10,11 @@ Collected written feedback on user experience (from users who consented on havin
 #**SUS Score:**
 Average = 84
 Median = 86
+
 **Learnability SubScore:**
 Average = 84
 Median = 94
+
 **Learnability SubScore:**
 Average = 84
 Median = 89
@@ -33,7 +35,7 @@ Source: MeasuringU. Jeff Sauro, PhD.
 “Loved the experience, what a great application.” jackchoq@uw.edu 
 
 “10/10 experience with the app, the only want would be to include a refresh feature on all pages, not just the home for ease of use. Personally, I like to have a trust rating system for sellers to see whether or not the item being sold is genuine or may be unknowingly broken. Otherwise, it feels like a better, more official version of the UW snapchat with people selling things!” - colinlim@uw.edu
-“When setting up my account, it was not clear that my password had an error because it was < 6 characters. I would suggest using additional characters and colors to clearly indicate the error message. Overall, it felt very intuitive to use! It streamlined the process of selling items :D” crystr2@uw.edu **Note: Based on this feedback, we actually ended up patching this bug in DawgDealz in order to improve usability!
+“When setting up my account, it was not clear that my password had an error because it was < 6 characters. I would suggest using additional characters and colors to clearly indicate the error message. Overall, it felt very intuitive to use! It streamlined the process of selling items :D” crystr2@uw.edu _**Note: Based on this feedback, we actually ended up patching this bug in DawgDealz in order to improve usability!_
 
 “Overall, I really liked the app! It was very intuitive and easy to use. I would definitely use it if it's available :D” -kimjoogy@uw.edu 
 
