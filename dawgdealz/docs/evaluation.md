@@ -1,26 +1,28 @@
-#SUS Testing
+**#SUS Testing**
 Surveyed 14 users who tested the app via a 10-item questionnaire 
 Provides a measure of a user’s perception of the app’s usability 
 9 users tested on IOS and 5 users tested on Android
 Collected written feedback on user experience (from users who consented on having their responses shared)
 
-#Our Results
+**#Our Results**
 
-#SUS Score:
+**#SUS Score:**
 Average = 84
 Median = 86
-#Learnability SubScore:
+**#Learnability SubScore:**
 Average = 84
 Median = 94
-#Learnability SubScore:
+**#Learnability SubScore:**
 Average = 84
 Median = 89
-#What does this SUS score mean?
 
+**#What does this SUS score mean?**
 
-DawgDealz SUS Score vs Average SUS Score (from over 10,000 responses). 
+![SUS score on a curve with percentiles ranks and grades](https://measuringu.com/wp-content/uploads/2018/09/SUS-score-on-a-curve-with-percentiles-ranks-and-grades.jpg)
 
+Average SUS Score (from over 10,000 responses). 
 
+DawgDealz is far about the Average SUS Score for apps.
 Looking at the median scores, users typically scored DawgDealz highly - Scores above 85 are associated with Excellent!
 Source: MeasuringU. Jeff Sauro, PhD.
 
