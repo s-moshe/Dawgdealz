@@ -133,19 +133,20 @@ class HomePageState extends State<HomePage> {
                                               MainAxisAlignment.center,
                                           children: [
                                             ClipOval(
-                                              child: (item.images.isNotEmpty)
-                                                  ? CachedNetworkImage(
-                                                      imageUrl: item.images[0],
-                                                      height: 100,
-                                                      width: 100,
-                                                      fit: BoxFit.cover,
-                                                      placeholder: (context, url) => const CircularProgressIndicator(),
-                                                      errorWidget: (context, url, error) => const Icon(Icons.error),
-                                                    )
-
-                                                  : const Icon(Icons
-                                                      .image_not_supported),
-                                            ),
+                                              child: Semantics(
+                                                label: 'This is an image of ${item.name}.', 
+                                                child: (item.images.isNotEmpty)
+                                                    ? CachedNetworkImage(
+                                                        imageUrl: item.images[0],
+                                                        height: 100,
+                                                        width: 100,
+                                                        fit: BoxFit.cover,
+                                                        placeholder: (context, url) => const CircularProgressIndicator(),
+                                                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                                                      )
+                                                    : const Icon(Icons.image_not_supported),
+                                              ),
+                                            )
                                           ],
                                         ),
                                         const SizedBox(height: 10),
