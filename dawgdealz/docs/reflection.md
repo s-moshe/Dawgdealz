@@ -114,6 +114,11 @@
 - [https://pub.dev/packages/image_picker](https://pub.dev/packages/image_picker)
 - [https://docs.flutter.dev/ui/accessibility-and-internationalization/accessibility](https://docs.flutter.dev/ui/accessibility-and-internationalization/accessibility)
 - [https://developers.google.com/learn/pathways/solution-ai-gemini-getting-started-dart-flutter](https://developers.google.com/learn/pathways/solution-ai-gemini-getting-started-dart-flutter)
+- [https://firebase.google.com/docs/firestore/query-data/listen] (https://firebase.google.com/docs/firestore/query-data/listen)
+- [https://firebase.google.com/products/functions](https://firebase.google.com/products/functions)
+- [https://www.youtube.com/watch/13-jNF984C0](https://www.youtube.com/watch/13-jNF984C0)
+- [https://stackoverflow.com/questions/56817428/firebase-should-i-store-user-data-on-the-authentication-profile-or-database](https://stackoverflow.com/questions/56817428/firebase-should-i-store-user-data-on-the-authentication-profile-or-database)
+- [https://www.youtube.com/watch?v=G0rsszX4E9Q](https://www.youtube.com/watch?v=G0rsszX4E9Q)
 
 ---
 
