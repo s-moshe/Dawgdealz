@@ -1,22 +1,23 @@
 **SUS Testing**
 
-Surveyed 14 users who tested the app via a 10-item questionnaire 
-Provides a measure of a user’s perception of the app’s usability 
-9 users tested on IOS and 5 users tested on Android
-Collected written feedback on user experience (from users who consented on having their responses shared)
+- Surveyed 14 users who tested the app via a 10-item questionnaire 
+- Provides a measure of a user’s perception of the app’s usability 
+- 9 users tested on IOS and 5 users tested on Android
+- Collected written feedback on user experience (from users who consented on having their responses shared)
+
 
 **Our Results**
 
 **SUS Score:**
-Average = 84
+Average = 84,
 Median = 86
 
 **Learnability SubScore:**
-Average = 84
+Average = 84,
 Median = 94
 
-**Learnability SubScore:**
-Average = 84
+**Usability SubScore:**
+Average = 84,
 Median = 89
 
 #**What does this SUS score mean?**
