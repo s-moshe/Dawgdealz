@@ -20,17 +20,17 @@ Median = 94
 Average = 84,
 Median = 89
 
-#**What does this SUS score mean?**
+**What does this SUS score mean?**
 
 ![SUS score on a curve with percentiles ranks and grades](https://measuringu.com/wp-content/uploads/2018/09/SUS-score-on-a-curve-with-percentiles-ranks-and-grades.jpg)
 
-Average SUS Score (from over 10,000 responses). 
+Average SUS Score is 68 (from over 10,000 responses). 
 
 DawgDealz is far about the Average SUS Score for apps.
 Looking at the median scores, users typically scored DawgDealz highly - Scores above 85 are associated with Excellent!
 Source: MeasuringU. Jeff Sauro, PhD.
 
-Feedback We Received on Usability and Utility
+**Feedback We Received on Usability and Utility**
 “I liked how the interface was straightforward, with labels and icons clearly labeled. I would use this app in real life because I always have a few items on hand that I don't use anymore, and it would be cool to connect with other UW students about selling things I don't use/crafts/knick knacks/etc. It's very helpful that contacting others automatically brings a user to a email template, but considering a built-in chat feature would also be another potential feature to think about!” - erinsong@uw.edu
 
 “Loved the experience, what a great application.” jackchoq@uw.edu 
