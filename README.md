@@ -31,14 +31,25 @@ DawgDealz is a Flutter app for creating and browsing listings in a marketplace. 
 ├── lib
 │   ├── main.dart                    # Entry point of the Flutter app
 │   ├── firebase_options.dart        # Firebase configuration for the app
+│   ├── auth_service.dart            # User authentication with firebase     
 │   ├── views                        # Contains UI components
-│   │   ├── custom_widget1.dart      # Listings Page
-│   │   ├── item_entry_view.dart     # Create Page
-│   │   ├── custom_widget5.dart      # Profile Page
-│   ├── models                       # Data models
+│   │   ├── account_view.dart        # User's Profile Page
+│   │   ├── edit_profile.dart        # Edit User Profile Page
+│   │   ├── home_page.dart           # Home Page 
+│   │   ├── item_description_view.dart # Listing Description Page
+│   │   ├── item_entry_view.dart     # Create New Item Page
+│   │   ├── login.dart               # Log in Page
+│   │   ├── signup.dart              # Sign up Page
+│   │   ├── seller_profile.dart      # Seller Profile Page
+│   │   ├── user_listing.dart        #  Listings Page
+│   ├── models                       # Contains ata models and providers
 │   │   ├── item.dart                # Model class for items
+│   │   ├── item_provider.dart       # Item Provider
+│   │   ├── profile_provider.dart    # Profile Provider
 │   ├── helpers                      # Utility functions
 │   │   ├── upload.dart              # Handles image uploads
+│   ├── firebase                     # Contains firebase functionality
+│   │   ├── firestore_crud.dart              # Firestore, create and update features
 
 ```
 ## Dependencies
@@ -62,12 +73,15 @@ Displays all items for sale.
 ### Create Page
 Add new items with details like name, description, and images.
 
+### My Listings Page
+Displays only the items the user posted. 
+
 ### Profile Page
-Edit user profile details and view personal listings.
+Edit user profile details.
 
 ## Firebase Integration
 - **Authentication**: Used to identify users.
-- **Firestore**: Stores item details, including name, description, and images.
+- **Firestore**: Stores item details, including name, description, and images. Stores profile details, including name, bio, major, year, and preferred safe campus meeting spots.
 - **Storage**: Handles image uploads for items.
 
 ## Data Design
@@ -82,7 +96,7 @@ Our app utilizes Firebase Firestore as the primary backend to store user and ite
 - Fields: name, price, description, images, condition, timestamp, and userId.
 - Structure: Each item is a document in the items collection, with its own unique listing ID assigned upon creation. It is also linked to its seller's userId for cross-referencing.
 
-#Flow
+##Flow
 
 Profile Management:
 - A ProfileProvider fetches and caches user profile data.
