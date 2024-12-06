@@ -70,3 +70,28 @@ Edit user profile details and view personal listings.
 - **Firestore**: Stores item details, including name, description, and images.
 - **Storage**: Handles image uploads for items.
 
+## Data Design
+
+Our app utilizes Firebase Firestore as the primary backend to store user and item data. The following data structures were designed to manage this information effectively:
+
+-User Data:
+- Fields: name, email, bio, major, gradDate, and preferredMeetupSpots.
+- Structure: Each user is represented as a document in the users collection, with a unique uid assigned at authentication.
+
+- Item Data:
+- Fields: name, price, description, images, condition, timestamp, and userId.
+- Structure: Each item is a document in the items collection, with its own unique listing ID assigned upon creation. It is also linked to its seller's userId for cross-referencing.
+
+#Flow
+
+Profile Management:
+- A ProfileProvider fetches and caches user profile data.
+- When a user updates their profile, changes are written to Firestore and the Provider notifies dependent widgets to re-render automatically.
+
+
+Item Listings:
+
+- An ItemProvider manages a list of items fetched from Firestore.
+- Changes such as new items or deleted are reflected in real-time using Firestore.
+
+
