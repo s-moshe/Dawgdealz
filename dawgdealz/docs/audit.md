@@ -21,6 +21,9 @@ Evidence -
 
 ![img desc](https://cdn.discordapp.com/attachments/888691546982064188/1314457901355765830/image.png?ex=6753d7d1&is=67528651&hm=7932f479bca3434257517a4a42e4805e9f8b48aac66511ae668ce622de823061&)
 
+![img desc](https://cdn.discordapp.com/attachments/888691546982064188/1314458335512232077/image.png?ex=6753d838&is=675286b8&hm=505188d2e9d3f2246c21202c75d958e3c4f0dfe0342a1967e7afbbeb974f0f98&)
+
+
 Many of the buttons throughout the app are light colored against a pale background, providing little contrast. This lowers the perceivablity of the buttons, especially for users with low vision. For example, the home page has pale pink buttons against a white button, which has a contrast ratio of 2.69:1. While the currently selected button does have a darker button color as an indication, the other buttons don’t have anything to make them stand out. This creates issues because users who are not able to perceive the other buttons clearly will not be able to navigate to the other pages. Other buttons throughout the also have a similar design, such as the buttons on the log in, account view, and seller profile view being pale lavender against a pale pink background, which yet again falls short of the required minimum on 3:1 to meet accessibility standards. Overall, this issue violates WCAG 1.4.11 which is the guideline for non-text contrast. 
 
 2 - Minor: Low Priority
