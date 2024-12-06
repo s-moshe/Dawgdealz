@@ -24,6 +24,8 @@ Median = 89
 
 ![SUS score on a curve with percentiles ranks and grades](https://measuringu.com/wp-content/uploads/2018/09/SUS-score-on-a-curve-with-percentiles-ranks-and-grades.jpg)
 
+
+
 Average SUS Score is 68 (from over 10,000 responses). 
 
 DawgDealz is far about the Average SUS Score for apps.
