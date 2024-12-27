@@ -53,9 +53,9 @@ class _ItemDescriptionState extends State<ItemDescription> {
                   },
                 ),
               ),
-              Text(
+              const Text(
                 'Slide to view all images uploaded by seller.',
-                style: const TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: 16),
               ),
               const SizedBox(height: 20),
               Text(

@@ -35,14 +35,14 @@ class UserItemList extends State<UserListing> {
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.white
+              color: Colors.black,
             ),
           ),
           subtitle: Text(
             'Listed on: ${items[index].listedDate}',
             style: const TextStyle(
               fontSize: 14,
-              color: Colors.white,
+              color: Colors.black,
             ),
           ),
           trailing: IconButton(
