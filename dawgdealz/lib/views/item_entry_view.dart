@@ -37,7 +37,7 @@ class _EntryItemViewState extends State<ItemEntryView> {
   Future<void> _generateDescription() async {
  
 
-    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: 'AIzaSyDAWK6ZMfj3W_iE4vpcN1lPcF5kzr3qEXs');
+    final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: '/*removed for security purpose*/');
     final content = [Content.text('Give me a short description about ${_nameController.text} using two sentences.')];
     
     try {
